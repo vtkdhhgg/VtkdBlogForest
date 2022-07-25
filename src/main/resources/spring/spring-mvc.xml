@@ -53,4 +53,13 @@
     <mvc:resources mapping="/plugin/**" location="/resource/assets/plugin/"/>
 
 
+    <!--注册拦截器-->
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/**"/>
+            <bean id="myInterceptor" class="com.vtkd.ssm.blog.interceptor.MyInterceptor"/>
+        </mvc:interceptor>
+    </mvc:interceptors>
+
+
 </beans>

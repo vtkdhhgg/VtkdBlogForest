@@ -41,16 +41,16 @@
         update
         <include refid="tb"/>
         <set>
-            <if test="linkUrl">link_url = #{linkUrl, jdbcType=VARCHAR},</if>
-            <if test="linkName">link_name = #{linkName, jdbcType=VARCHAR},</if>
-            <if test="linkImage">link_image = #{linkImage, jdbcType=VARCHAR},</if>
-            <if test="linkDescription">link_description = #{linkDescription, jdbcType=VARCHAR},</if>
-            <if test="linkOwnerNickname">link_owner_nickname = #{linkOwnerNickname, jdbcType=VARCHAR},</if>
-            <if test="linkOwnerContact">link_owner_contact = #{linkOwnerContact, jdbcType=VARCHAR},</if>
-            <if test="linkUpdateTime">link_update_time = #{linkUpdateTime, jdbcType=TIMESTAMP},</if>
-            <if test="linkCreateTime">link_create_time = #{link_create_time, jdbcType=TIMESTAMP},</if>
-            <if test="linkOrder">link_order = #{linkOrder, jdbcType=INTEGER},</if>
-            <if test="linkStatus">link_status = #{linkStatus, jdbcType=INTEGER},</if>
+            <if test="linkUrl != null">link_url = #{linkUrl, jdbcType=VARCHAR},</if>
+            <if test="linkName != null">link_name = #{linkName, jdbcType=VARCHAR},</if>
+            <if test="linkImage != null">link_image = #{linkImage, jdbcType=VARCHAR},</if>
+            <if test="linkDescription != null">link_description = #{linkDescription, jdbcType=VARCHAR},</if>
+            <if test="linkOwnerNickname != null">link_owner_nickname = #{linkOwnerNickname, jdbcType=VARCHAR},</if>
+            <if test="linkOwnerContact != null">link_owner_contact = #{linkOwnerContact, jdbcType=VARCHAR},</if>
+            <if test="linkUpdateTime != null">link_update_time = #{linkUpdateTime, jdbcType=TIMESTAMP},</if>
+            <if test="linkCreateTime != null">link_create_time = #{link_create_time, jdbcType=TIMESTAMP},</if>
+            <if test="linkOrder != null">link_order = #{linkOrder, jdbcType=INTEGER},</if>
+            <if test="linkStatus != null">link_status = #{linkStatus, jdbcType=INTEGER},</if>
         </set>
         where link_id = #{linkId, jdbcType=INTEGER}
     </update>

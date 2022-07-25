@@ -16,14 +16,20 @@ public class Tag implements Serializable {
     // 描述
     private String tagDescription;
 
+    /**
+     * 文章数量(不是数据库字段)
+     */
+    private Integer articleCount;
+
     public Tag(){
 
     }
 
-    public Tag(Integer tagId, String tagName, String tagDescription) {
+    public Tag(Integer tagId, String tagName, String tagDescription, Integer articleCount) {
         this.tagId = tagId;
         this.tagName = tagName;
         this.tagDescription = tagDescription;
+        this.articleCount = articleCount;
     }
 
     public Integer getTagId() {
@@ -74,5 +80,13 @@ public class Tag implements Serializable {
                 ", tagName='" + tagName + '\'' +
                 ", tagDescription='" + tagDescription + '\'' +
                 '}';
+    }
+
+    public Integer getArticleCount() {
+        return articleCount;
+    }
+
+    public void setArticleCount(Integer articleCount) {
+        this.articleCount = articleCount;
     }
 }
