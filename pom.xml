@@ -1,0 +1,317 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>org.example</groupId>
+    <artifactId>MyBlog_Forest</artifactId>
+    <version>1.0-SNAPSHOT</version>
+
+    <properties>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
+        <!--构建项目的时候使用utf-8构建-->
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <!--锁定Spring的版本,方便管理-->
+        <spring.version>5.3.22</spring.version>
+        <!--jackson-databind是jackson api的高级封装,方便开发,需要依赖 jackson-core jackson-annotations 这个两个包-->
+        <jackson-databind-version>2.10.1</jackson-databind-version>
+        <!--fastjson 阿里开源-->
+        <fastjson-version>2.0.9</fastjson-version>
+        <!--JSON编码器/解码器-->
+        <json-version>20220320</json-version>
+
+        <!--数据库And 数据库连接池-->
+        <mysql-version>8.0.29</mysql-version>
+        <druid-version>1.2.11</druid-version>
+        <!--Google开源工具包-->
+        <guava-version>31.1-jre</guava-version>
+
+        <!--mybatis mybatis-spring pagehelper-->
+        <mybatis-version>3.5.9</mybatis-version>
+        <mybatis-spring-version>1.3.0</mybatis-spring-version>
+        <pagehelper-version>5.3.1</pagehelper-version>
+
+        <!--servlet/jsp jstl-->
+        <servlet-version>4.0.1</servlet-version>
+        <servlet-jsp-version>2.3.1</servlet-jsp-version>
+        <jstl-version>1.2</jstl-version>
+
+        <!--基于Spring 快速开发jsp的脚手架-->
+        <rapid-core-version>4.0.5</rapid-core-version>
+
+        <!--文件上传-->
+        <commons-fileupload-version>1.4</commons-fileupload-version>
+        <commons-io-version>2.6</commons-io-version>
+        <!--单元测试-->
+        <junit-version>4.13.1</junit-version>
+        <!--常用工具类包-->
+        <hutool-all-version>5.8.4</hutool-all-version>
+        <!--日志 logback-->
+        <logback-classic-version>1.2.11</logback-classic-version>
+
+        <!--swagger2-->
+        <swagger2-version>2.9.2</swagger2-version>
+
+
+    </properties>
+
+    <dependencies>
+        <!--web 项目 主要的依赖有
+            Junit 单元测试
+            数据库驱动, 数据库连接池
+            Servlet/jsp jstl
+            Mybatis, mybatis-spring
+            spring-web/ spring-mvc
+            Java Json处理 : Jackson-databind(core annotations),fastjson
+                org.json : 一个关于json的解析器/编码器
+            日志: log4j logback
+            数据分页: pagehelper
+            文件上传: commons-fileupload 依赖于 commons-io
+
+            一些其他的工具:
+                rapid-framework : 快速开发jsp的脚手架(基于spirng)
+                guava : google 开源的工具包
+                Hutool : 一个Java的开源工具包
+
+        -->
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${junit-version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- swagger -->
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger2</artifactId>
+            <version>${swagger2-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger-ui</artifactId>
+            <version>${swagger2-version}</version>
+        </dependency>
+
+
+
+        <!--数据库驱动, 数据库连接池(druid)-->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>${mysql-version}</version>
+        </dependency>
+        <!--添加alibaba 数据库连接池支持-->
+        <dependency>
+            <groupId>com.alibaba
+            </groupId>
+            <artifactId>druid</artifactId>
+            <version>${druid-version}</version>
+        </dependency>
+
+        <!--servlet/jsp-->
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>${servlet-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet.jsp</groupId>
+            <artifactId>javax.servlet.jsp-api</artifactId>
+            <version>${servlet-jsp-version}</version>
+        </dependency>
+        <!--jstl 支持-->
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>jstl</artifactId>
+            <version>${jstl-version}</version>
+        </dependency>
+
+        <!--mybatis, mybatis-spring-->
+        <dependency>
+            <groupId>org.mybatis</groupId>
+            <artifactId>mybatis</artifactId>
+            <version>${mybatis-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.mybatis</groupId>
+            <artifactId>mybatis-spring</artifactId>
+            <version>${mybatis-spring-version}</version>
+        </dependency>
+
+        <!--添加Spring支持-->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-core</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-beans</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-web</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context-support</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+        <!--spring test支持-->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+        <!--Spring 事务管理支持-->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-tx</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+        <!--Spring jdbc操作支持-->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-jdbc</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+        <!--Spring aop编程支持-->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-aop</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-aspects</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+
+
+        <!--Jackson-databind 依赖 core 和 annotations-->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+            <version>${jackson-databind-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
+            <version>${jackson-databind-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${jackson-databind-version}</version>
+        </dependency>
+
+        <!--alibaba 开源的Json解析 jar包-->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>${fastjson-version}</version>
+        </dependency>
+
+        <!--JSON编码器/解码器。
+        它还包括在JSON和XML、HTTP头、cookie和CDL之间转换的功能-->
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>${json-version}</version>
+        </dependency>
+
+        <!--添加logback日志-->
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>${logback-classic-version}</version>
+        </dependency>
+
+
+        <!--添加文件上传支持 依赖 commons-io-->
+        <dependency>
+            <groupId>commons-fileupload</groupId>
+            <artifactId>commons-fileupload</artifactId>
+            <version>${commons-fileupload-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>${commons-io-version}</version>
+        </dependency>
+
+
+        <!--基于spring 快速开发jsp的脚手架-->
+        <dependency>
+            <groupId>com.googlecode.rapid-framework</groupId>
+            <artifactId>rapid-core</artifactId>
+            <version>${rapid-core-version}</version>
+        </dependency>
+
+        <!--Google 开源的 Guava 工具库-->
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>${guava-version}</version>
+        </dependency>
+
+
+        <!--分页工具-->
+        <dependency>
+            <groupId>com.github.pagehelper</groupId>
+            <artifactId>pagehelper</artifactId>
+            <version>${pagehelper-version}</version>
+        </dependency>
+
+        <!--Hutool是一个小而全的Java工具类库，
+        通过静态方法封装，降低相关API的学习成本，提高工作效率，
+        使Java拥有函数式语言般的优雅，让Java语言也可以“甜甜的”。-->
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-all</artifactId>
+            <version>${hutool-all-version}</version>
+        </dependency>
+
+    </dependencies>
+
+
+    <build>
+        <resources>
+            <!-- 编译之后包含xml -->
+            <resource>
+                <directory>src/main/java</directory>
+                <includes>
+                    <include>**/*.xml</include>
+                </includes>
+                <filtering>true</filtering>
+            </resource>
+            <!-- 编译之后包含xml和properties -->
+            <resource>
+                <directory>src/main/resources</directory>
+                <includes>
+                    <include>**/*</include>
+                </includes>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+    </build>
+
+
+</project>

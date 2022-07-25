@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vtkd.ssm.blog.mapper.UserMapper">
+
+    <resultMap id="BaseResultMap" type="com.vtkd.ssm.blog.entity.User">
+        <id column="user_id" property="userId" jdbcType="INTEGER"/>
+        <result column="user_name" property="userName" jdbcType="VARCHAR"/>
+        <result column="user_pass" property="userPass" jdbcType="VARCHAR"/>
+        <result column="user_nickname" property="userNickname" jdbcType="VARCHAR"/>
+        <result column="user_email" property="userEmail" jdbcType="VARCHAR"/>
+        <result column="user_url" property="userUrl" jdbcType="VARCHAR"/>
+        <result column="user_avatar" property="userAvatar" jdbcType="VARCHAR"/>
+        <result column="user_last_login_ip" property="userLastLoginIp" jdbcType="VARCHAR"/>
+        <result column="user_register_time" property="userRegisterTime" jdbcType="TIMESTAMP"/>
+        <result column="user_last_login_time" property="userLastLoginTime" jdbcType="TIMESTAMP"/>
+        <result column="user_status" property="userStatus" jdbcType="INTEGER"/>
+        <result column="user_role" property="userRole" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="tb">user</sql>
+
+    <sql id="Base_Column_List">
+        user_id, user_name, user_pass, user_nickname, user_email, user_url, user_avatar,
+    user_last_login_ip, user_register_time, user_last_login_time, user_status, user_role
+    </sql>
+
+    <!--根据id查询用户信息-->
+    <select id="getUserById" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from
+        <include refid="tb"/>
+        where user_id = #{userId, jdbcType=INTEGER}
+    </select>
+
+    <!--根据 用户名 查询用户信息-->
+    <select id="getUserByName" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from
+        <include refid="tb"/>
+        where user_name = #{userName, jdbcType=VARCHAR}
+    </select>
+
+    <!--根据 id 删除用户-->
+    <delete parameterType="java.lang.Integer" id="deleteUser">
+        delete from
+        <include refid="tb"/>
+        where user_id = ${userId, jdbcType=INTEGER}
+    </delete>
+
+    <!--添加 用户-->
+    <insert id="insertUser" parameterType="com.vtkd.ssm.blog.entity.User" useGeneratedKeys="true" keyProperty="userId">
+        insert into
+        <include refid="tb"/>
+        (user_id, user_name, user_pass,
+        user_nickname, user_email, user_url,
+        user_avatar, user_last_login_ip, user_register_time,
+        user_last_login_time, user_status, user_role)
+        values (#{userId,jdbcType=INTEGER}, #{userName,jdbcType=VARCHAR}, #{userPass,jdbcType=VARCHAR},
+        #{userNickname,jdbcType=VARCHAR}, #{userEmail,jdbcType=VARCHAR}, #{userUrl,jdbcType=VARCHAR},
+        #{userAvatar,jdbcType=VARCHAR}, #{userLastLoginIp,jdbcType=VARCHAR}, #{userRegisterTime,jdbcType=TIMESTAMP},
+        #{userLastLoginTime,jdbcType=TIMESTAMP}, #{userStatus,jdbcType=INTEGER}, #{userRole,jdbcType=VARCHAR})
+    </insert>
+
+    <!--更新 用户-->
+    <update id="updateUser" parameterType="com.vtkd.ssm.blog.entity.User">
+        update
+        <include refid="tb"/>
+        <set>
+            <if test="userName != null">user_name = #{userName, jdbcType=VARCHAR},</if>
+            <if test="userPass != null">user_pass = #{userPass, jdbcType=VARCHAR},</if>
+            <if test="userNickname != null">user_nickname = #{userNickname, jdbcType=VARCHAR},</if>
+            <if test="userEmail != null">user_email = #{userEmail, jdbcType=VARCHAR},</if>
+            <if test="userUrl != null">user_url = #{userUrl, jdbcType=VARCHAR},</if>
+            <if test="userAvatar != null">user_avatar = #{userAvatar, jdbcType=VARCHAR},</if>
+            <if test="userLastLoginIp != null">user_last_login_ip = #{userLastLoginIp, jdbcType=VARCHAR},</if>
+            <if test="userRegisterTime != null">user_register_time = #{userRegisterTime, jdbcType=TIMESTAMP},</if>
+            <if test="userLastLoginTime != null">user_last_login_time = #{userLastLoginTime, jdbcType=TIMESTAMP},</if>
+            <if test="userStatus != null">user_status = #{userStatus, jdbcType=INTEGER},</if>
+            <if test="userRole != null">user_role = #{userRole, jdbcType=VARCHAR},</if>
+        </set>
+        where user_id = #{userId, jdbcType=INTEGER}
+    </update>
+
+    <!--根据 用户名 or 邮箱查询用户-->
+    <select id="getUserByNameOrEmail" parameterType="java.lang.String" resultType="com.vtkd.ssm.blog.entity.User">
+        select
+        <include refid="Base_Column_List"/>
+        from
+        <include refid="tb"/>
+        <where>
+            user_name=${value} OR user_email=#{value}
+        </where>
+        AND user_status > 0
+        limit 1
+    </select>
+
+
+    <!--根据 用户名 or 邮箱查询用户-->
+    <select id="getUserByEmail" parameterType="java.lang.String" resultType="com.vtkd.ssm.blog.entity.User">
+        select
+        <include refid="Base_Column_List"/>
+        from
+        <include refid="tb"/>
+        <where>
+            user_email=#{value}
+        </where>
+        limit 1
+    </select>
+
+    <!--用户列表查询-->
+    <select id="listUser" resultType="com.vtkd.ssm.blog.entity.User">
+        select
+        <include refid="Base_Column_List"/>
+        from
+        <include refid="tb"/>
+        ORDER BY `user_status` ASC
+    </select>
+
+
+</mapper>

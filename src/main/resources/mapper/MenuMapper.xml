@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vtkd.ssm.blog.mapper.MenuMapper">
+
+
+    <resultMap id="BaseResultMap" type="com.vtkd.ssm.blog.entity.Menu">
+        <id column="menu_id" property="menuId" jdbcType="INTEGER"/>
+        <result column="menu_name" property="menuName" jdbcType="VARCHAR"/>
+        <result column="menu_url" property="menuUrl" jdbcType="VARCHAR"/>
+        <result column="menu_level" property="menuLevel" jdbcType="INTEGER"/>
+        <result column="menu_icon" property="menuIcon" jdbcType="VARCHAR"/>
+        <result column="menu_order" property="menuOrder" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="tb">menu</sql>
+
+    <sql id="Base_Column_List">
+        menu_id, menu_name, menu_url, menu_level, menu_icon, menu_order
+    </sql>
+
+
+    <!--添加菜单-->
+    <insert id="insertMenu" parameterType="com.vtkd.ssm.blog.entity.Menu" useGeneratedKeys="true" keyProperty="menuId">
+        insert into
+        <include refid="tb"/>
+        (<include refid="Base_Column_List"/>)
+        values (#{menuId, jdbcType=INTEGER},#{menuName, jdbcType=VARCHAR}, #{menuUrl, jdbcType=VARCHAR}
+        , #{menuLevel, jdbcType=INTEGER}, #{menuIcon, jdbcType=VARCHAR}, #{menuOrder, jdbcType=INTEGER})
+    </insert>
+
+    <!--修改 菜单-->
+    <update id="updateMenu" parameterType="com.vtkd.ssm.blog.entity.Menu">
+        update
+        <include refid="tb"/>
+        <set>
+            <if test="menuName">menu_name = #{menuName, jdbcType=VARCHAR},</if>
+            <if test="menuUrl">menu_url = #{menuUrl, jdbcType=VARCHAR},</if>
+            <if test="menuLevel">menu_level = #{menuLevel, jdbcType=INTEGER},</if>
+            <if test="menuIcon">menu_icon = #{menuIcon, jdbcType=VARCHAR},</if>
+            <if test="menuOrder">menu_order = #{menuOrder, jdbcType=INTEGER}</if>
+        </set>
+        where menu_id = #{menuId, jdbcType=INTEGER}
+    </update>
+
+    <!--删除 菜单-->
+    <delete id="deleteMenu" parameterType="java.lang.Integer">
+        delete from
+        <include refid="tb"/>
+        where menu_id = #{menuId, jdbcType=INTEGER}
+    </delete>
+
+    <!--根据 id 查询菜单-->
+    <select id="getMenuById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from
+        <include refid="tb"/>
+        where menu_id = #{menuId, jdbcType=INTEGER}
+    </select>
+
+    <!--查询 菜单列表-->
+    <select id="listMenu" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from
+        <include refid="tb"/>
+        order by `menu_order` ASC
+    </select>
+
+
+</mapper>
