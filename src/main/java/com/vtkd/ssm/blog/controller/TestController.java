@@ -2,6 +2,7 @@ package com.vtkd.ssm.blog.controller;
 
 import com.vtkd.ssm.blog.entity.User;
 import com.vtkd.ssm.blog.service.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,6 +13,7 @@ import org.springframework.web.servlet.ModelAndView;
  * 只是用来测试
  */
 @Controller
+@Slf4j
 public class TestController {
 
     @Autowired
@@ -19,6 +21,10 @@ public class TestController {
 
     @RequestMapping("/test")
     public ModelAndView test(){
+
+        log.info("啊世纪东方；拉丝机；FJ；了拉克丝几点放可乐；就爱看了；");
+
+
         return new ModelAndView("test");
     }
 

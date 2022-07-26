@@ -50,9 +50,16 @@
         <hutool-all-version>5.8.4</hutool-all-version>
         <!--日志 logback-->
         <logback-classic-version>1.2.11</logback-classic-version>
+        <logback-ext-spring-version>0.1.5</logback-ext-spring-version>
+        <jcl-over-slf4j-version>1.7.36</jcl-over-slf4j-version>
 
         <!--swagger2-->
         <swagger2-version>2.9.2</swagger2-version>
+
+        <!--lombok-->
+        <lombok-version>1.18.24</lombok-version>
+
+
 
 
     </properties>
@@ -66,11 +73,12 @@
             spring-web/ spring-mvc
             Java Json处理 : Jackson-databind(core annotations),fastjson
                 org.json : 一个关于json的解析器/编码器
-            日志: log4j logback
+            日志: log4j logback slf4j
             数据分页: pagehelper
             文件上传: commons-fileupload 依赖于 commons-io
 
             一些其他的工具:
+                lombok
                 rapid-framework : 快速开发jsp的脚手架(基于spirng)
                 guava : google 开源的工具包
                 Hutool : 一个Java的开源工具包
@@ -78,11 +86,44 @@
         -->
 
         <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok-version}</version>
+        </dependency>
+
+        <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>${junit-version}</version>
             <scope>test</scope>
         </dependency>
+
+        <!--添加logback日志-->
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>${logback-classic-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-core</artifactId>
+            <version>${logback-classic-version}</version>
+        </dependency>
+        <!--将spring本身的commons-lang的日志输出替换成slf4j-->
+<!--        <dependency>-->
+<!--            <groupId>org.slf4j</groupId>-->
+<!--            <artifactId>jcl-over-slf4j</artifactId>-->
+<!--            <version>${jcl-over-slf4j-version}</version>-->
+<!--        </dependency>-->
+<!--        <dependency>-->
+        <!--logback 对 spring的支持-->
+<!--            <groupId>org.logback-extensions</groupId>-->
+<!--            <artifactId>logback-ext-spring</artifactId>-->
+<!--            <version>${logback-ext-spring-version}</version>-->
+<!--        </dependency>-->
+
+
+
 
         <!-- swagger -->
         <dependency>
@@ -95,8 +136,6 @@
             <artifactId>springfox-swagger-ui</artifactId>
             <version>${swagger2-version}</version>
         </dependency>
-
-
 
         <!--数据库驱动, 数据库连接池(druid)-->
         <dependency>
@@ -141,6 +180,13 @@
             <artifactId>mybatis-spring</artifactId>
             <version>${mybatis-spring-version}</version>
         </dependency>
+        <!--分页工具-->
+        <dependency>
+            <groupId>com.github.pagehelper</groupId>
+            <artifactId>pagehelper</artifactId>
+            <version>${pagehelper-version}</version>
+        </dependency>
+
 
         <!--添加Spring支持-->
         <dependency>
@@ -237,12 +283,7 @@
             <version>${json-version}</version>
         </dependency>
 
-        <!--添加logback日志-->
-        <dependency>
-            <groupId>ch.qos.logback</groupId>
-            <artifactId>logback-classic</artifactId>
-            <version>${logback-classic-version}</version>
-        </dependency>
+
 
 
         <!--添加文件上传支持 依赖 commons-io-->
@@ -273,12 +314,6 @@
         </dependency>
 
 
-        <!--分页工具-->
-        <dependency>
-            <groupId>com.github.pagehelper</groupId>
-            <artifactId>pagehelper</artifactId>
-            <version>${pagehelper-version}</version>
-        </dependency>
 
         <!--Hutool是一个小而全的Java工具类库，
         通过静态方法封装，降低相关API的学习成本，提高工作效率，

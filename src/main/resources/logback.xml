@@ -1,36 +1,103 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<configuration>
-    <!-- 尽量别用绝对路径，如果带参数不同容器路径解释可能不同,以下配置参数在pom.xml里 -->
-    <property name="log.root.level" value="DEBUG"/> <!-- 日志级别 -->
-    <property name="log.other.level" value="ERROR"/> <!-- 其他日志级别 -->
-    <property name="log.base" value="logs"/> <!-- 日志路径，这里是相对路径，默认会输出到tomcat/bin目录 下 -->
-    <property name="log.moduleName" value="MyBlog_Forest"/>  <!-- 模块名称， 影响日志配置名，日志文件名 -->
-    <property name="log.max.size" value="20MB"/> <!-- 日志文件大小 -->
+<?xml version="1.0" encoding="UTF-8" ?>
+<configuration scan="true" scanPeriod="60 seconds" debug="true">
+    <!--定义参数常量-->
+    <!--TRACE<DEBUG<INFO<WARN<ERROR-->
+    <!--logger.trace("msg")  logger.debug("msg")...-->
+    <property name="log.level" value="debug"/>
+    <!-- 定义日志文件保留日期 -->
+    <property name="log.maxHistory" value="30"/>
+    <!-- 定义日志文件输出位置 -->
+    <property name="log.filePath" value="logs"/>
+    <!-- 定义日志文件输出格式 -->
+    <property name="log.pattern" value="%d{yyyy-MM-dd HH:mm:ss:SS}[%thread] %-5level %logger{50} - %msg%n"/>
 
-    <!--控制台输出 -->
-    <appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
-        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
-            <Pattern>%date{yyyy-MM-dd HH:mm:ss.SSS} %-5level [%thread]%logger{56}.%method:%L -%msg%n</Pattern>
+    <!-- ConsoleAppender 控制台输出日志 -->
+    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>
+                <!-- 设置日志输出格式 -->
+                ${log.pattern}
+            </pattern>
         </encoder>
     </appender>
 
-    <!-- 日志文件输出 -->
-    <appender name="file" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <File>${log.base}/${log.moduleName}.log
-        </File><!-- 设置日志不超过${log.max.size}时的保存路径，注意如果 是web项目会保存到Tomcat的bin目录 下 -->
-        <!-- 滚动记录文件，先将日志记录到指定文件，当符合某个条件时，将日志记录到其他文件。-->
+    <!-- ERROR级别日志 -->
+    <!-- 滚动记录文件，先将日志记录到指定文件，当符合某个条件时，将日志记录到其他文件 RollingFileAppender -->
+    <appender name="ERROR"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!-- 过滤器，只记录WARN级别的日志 -->
+        <!-- 日志级别等于配置级别，过滤器会根据onMath 和 onMismatch接收或拒绝日志。 -->
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <!-- 设置过滤级别 -->
+            <level>ERROR</level>
+            <!-- 用于配置符合过滤条件的操作 -->
+            <onMatch>ACCEPT</onMatch>
+            <!-- 用于配置不符合过滤条件的操作 -->
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <!-- 最常用的滚动策略，它根据时间来制定滚动策略.既负责滚动也负责触发滚动 -->
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <FileNamePattern>${log.base}/archive/${log.moduleName}_all_%d{yyyy-MM-dd}.%i.log.zip
-            </FileNamePattern>
-            <!-- 当天的日志大小 超过${log.max.size}时,压缩日志并保存 -->
-            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
-                <maxFileSize>${log.max.size}</maxFileSize>
-            </timeBasedFileNamingAndTriggeringPolicy>
+            <!--日志输出位置 可相对、和绝对路径 -->
+            <fileNamePattern>
+                ${log.filePath}/error/%d{yyyy-MM-dd}/error-log.log
+                <!--下面这种方式是在第二天将今天的日志压缩
+                ${log.filePath}/error/error.%d{yyyy-MM-dd}.log.gz
+                -->
+            </fileNamePattern>
+            <!-- 可选节点，控制保留的归档文件的最大数量，超出数量就删除旧文件。
+            假设设置每个月滚动(把fileNamePattern改为${log.filePath}/error/%d{yyyy-MM}/error-log.log)，
+            且<maxHistory>是6，则只保存最近6个月的文件，删除之前的旧文件。
+            注意，删除旧文件是，那些为了归档而创建的目录也会被删除 -->
+            <!--文件最大保存历史数量-->
+            <maxHistory>${log.maxHistory}</maxHistory>
         </rollingPolicy>
-        <!-- 日志输出的文件的格式  -->
-        <layout class="ch.qos.logback.classic.PatternLayout">
-            <pattern>%date{yyyy-MM-dd HH:mm:ss.SSS} %-5level [%thread]%logger{56}.%method:%L -%msg%n</pattern>
-        </layout>
+        <encoder>
+            <pattern>
+                <!-- 设置日志输出格式 -->
+                ${log.pattern}
+            </pattern>
+        </encoder>
     </appender>
 
+    <!-- INFO级别日志 appender -->
+    <appender name="INFO"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>INFO</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>
+                ${log.filePath}/info/%d{yyyy-MM-dd}/info-log.log
+            </fileNamePattern>
+            <maxHistory>${log.maxHistory}</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>
+                ${log.pattern}
+            </pattern>
+        </encoder>
+    </appender>
+
+    <logger name="com.zx.o2o" level="${log.level}" additivity="true">
+        <!-- 文件输出 -->
+        <appender-ref ref="ERROR"/>
+        <appender-ref ref="INFO"/>
+        <appender-ref ref="DEBUG"/>
+    </logger>
+
+    <!-- root级别 DEBUG -->
+    <root>
+        <!-- 打印debug级别日志及以上级别日志 -->
+        <level value="DEBUG"/>
+        <!-- 控制台输出 -->
+        <appender-ref ref="console"/>
+        <!-- 文件输出 -->
+        <appender-ref ref="ERROR" />
+        <appender-ref ref="DEBUG" />
+    </root>
 </configuration>
+
+
+

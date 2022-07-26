@@ -12,6 +12,7 @@
 out
 target
 .idea
+logs
 *.iws
 *.iml
 *.ipr

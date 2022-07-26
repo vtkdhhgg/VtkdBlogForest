@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vtkd.ssm.blog.mapper.PageMapper">
+
+    <resultMap id="BaseResultMap" type="com.vtkd.ssm.blog.entity.Page">
+        <id column="page_id" property="pageId" jdbcType="INTEGER"/>
+        <result column="page_key" property="pageKey" jdbcType="VARCHAR"/>
+        <result column="page_title" property="pageTitle" jdbcType="VARCHAR"/>
+        <result column="page_content" property="pageContent" jdbcType="VARCHAR"/>
+        <result column="page_create_time" property="pageCreateTime" jdbcType="TIMESTAMP"/>
+        <result column="page_update_time" property="pageUpdateTime" jdbcType="TIMESTAMP"/>
+        <result column="page_view_count" property="pageViewCount" jdbcType="INTEGER"/>
+        <result column="page_comment_count" property="pageCommentCount" jdbcType="INTEGER"/>
+        <result column="page_status" property="pageStatus" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="tb">page</sql>
+
+    <sql id="Base_Column_List">
+        page_id,page_key, page_title,page_content,
+            page_create_time,page_update_time,page_view_count,page_comment_count,page_status
+    </sql>
+
+
+    <!--添加 页面-->
+    <insert id="insertPage" parameterType="com.vtkd.ssm.blog.entity.Page" useGeneratedKeys="true" keyProperty="pageId">
+        INSERT INTO
+        <include refid="tb"/>
+        (<include refid="Base_Column_List"/>)
+        values
+        (#{pageId, jdbcType=INTEGER},#{pageKey, jdbcType=VARCHAR},#{pageTitle, jdbcType=VARCHAR},#{pageContent,jdbcType=VARCHAR},#{pageCreateTime, jdbcType=TIMESTAMP},#{pageUpdateTime, jdbcType=TIMESTAMP}
+        ,#{pageViewCount,jdbcType=INTEGER},#{pageCommentCount,jdbcType=INTEGER},#{pageStatus,jdbcType=INTEGER})
+    </insert>
+
+    <!--修改 页面-->
+    <update id="updatePage" parameterType="com.vtkd.ssm.blog.entity.Page">
+        update
+        <include refid="tb"/>
+        <set>
+            <if test="pageKey != null">page_key = #{pageKey},</if>
+            <if test="pageTitle != null">page_title = #{pageTitle},</if>
+            <if test="pageContent != null">page_content = #{pageContent},</if>
+            <if test="pageCreateTime != null">page_create_time = #{pageCreateTime},</if>
+            <if test="pageUpdateTime != null">page_update_time = #{pageUpdateTime},</if>
+            <if test="pageViewCount != null">page_view_count = #{pageViewCount},</if>
+            <if test="pageCommentCount != null">page_comment_count = #{pageCommentCount},</if>
+            <if test="pageStatus != null">page_status = #{pageStatus}</if>
+        </set>
+        where page_id = #{pageId, jdbcType=INTEGER}
+    </update>
+
+    <!--删除页面-->
+    <delete id="deletePageById" parameterType="java.lang.Integer">
+        DELETE FROM
+        <include refid="tb"/>
+        where page_id = #{pageId, jdbcType=INTEGER}
+    </delete>
+
+    <!--根据id查询页面-->
+    <select id="getPageById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        <include refid="tb"/>
+        where page_id = #{pageId, jdbcType=INTEGER}
+    </select>
+
+    <!--根据key查询页面-->
+    <select id="getPageByKey" resultType="com.vtkd.ssm.blog.entity.Page">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        <include refid="tb"/>
+        <where>
+            <if test="pageStatus != null">page_status = #{pageStatus, jdbcTypd=INTEGER} AND</if>
+            page_key = #{pageKey, jdbcType=VARCHAR}
+        </where>
+    </select>
+
+    <!--查询所有页面，不分页-->
+    <select id="listPage" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        <include refid="tb"/>
+        <where>
+            <if test="pageStatus!=null">
+                page_status = #{pageStatus}
+            </if>
+        </where>
+    </select>
+
+
+</mapper>
