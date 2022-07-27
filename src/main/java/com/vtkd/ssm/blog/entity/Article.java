@@ -2,6 +2,7 @@ package com.vtkd.ssm.blog.entity;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -25,12 +26,25 @@ public class Article implements Serializable {
     private String articleSummary; // 摘要
     private String articleThumbnail; // 缩略图
 
+    /**
+     * 用户信息 不是数据库字段
+     */
+    private User user;
+
+    /**
+     * 标签信息 不是数据库字段
+     */
+    private List<Tag> tagList;
+
+    /**
+     * 分类信息 不是数据库字段
+     */
+    private List<Category> categoryList;
+
     public Article() {
     }
 
-    public Article(Integer articleId, Integer articleUserId, String articleTitle, String articleContent, Integer articleViewCount
-            , Integer articleCommentCount, Integer articleLikeCount, Integer articleIsComment, Integer articleStatus
-            , Integer articleOrder, Date articleUpdateTime, Date articleCreateTime, String articleSummary, String articleThumbnail) {
+    public Article(Integer articleId, Integer articleUserId, String articleTitle, String articleContent, Integer articleViewCount, Integer articleCommentCount, Integer articleLikeCount, Integer articleIsComment, Integer articleStatus, Integer articleOrder, Date articleUpdateTime, Date articleCreateTime, String articleSummary, String articleThumbnail, User user, List<Tag> tagList, List<Category> categoryList) {
         this.articleId = articleId;
         this.articleUserId = articleUserId;
         this.articleTitle = articleTitle;
@@ -45,6 +59,33 @@ public class Article implements Serializable {
         this.articleCreateTime = articleCreateTime;
         this.articleSummary = articleSummary;
         this.articleThumbnail = articleThumbnail;
+        this.user = user;
+        this.tagList = tagList;
+        this.categoryList = categoryList;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public List<Tag> getTagList() {
+        return tagList;
+    }
+
+    public void setTagList(List<Tag> tagList) {
+        this.tagList = tagList;
+    }
+
+    public List<Category> getCategoryList() {
+        return categoryList;
+    }
+
+    public void setCategoryList(List<Category> categoryList) {
+        this.categoryList = categoryList;
     }
 
     public Integer getArticleId() {
@@ -194,6 +235,9 @@ public class Article implements Serializable {
                 ", articleCreateTime=" + articleCreateTime +
                 ", articleSummary='" + articleSummary + '\'' +
                 ", articleThumbnail='" + articleThumbnail + '\'' +
+                ", user=" + user +
+                ", tagList=" + tagList +
+                ", categoryList=" + categoryList +
                 '}';
     }
 }

@@ -47,8 +47,6 @@ public class Option implements Serializable {
     //关于站点 微博链接
     private String optionAboutsiteWeibo;
 
-
-    // todo 统计?
     private String optionTongji;
 
     // 状态

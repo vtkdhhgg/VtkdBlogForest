@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vtkd.ssm.blog.mapper.ArticleTagRefMapper">
+
+
+    <sql id="tb">article_tag_ref</sql>
+
+    <sql id="Base_Column_List">
+        article_id, tag_id
+    </sql>
+
+    <!--根据 标签id 查询 相关联文章总数-->
+    <select id="countArticleByTagId" resultType="java.lang.Integer">
+        select
+        COUNT(*)
+        from
+        <include refid="tb"/>
+        where tag_id = #{tagId, jdbcType=INTEGER}
+    </select>
+
+
+    <!--根据 文章id 查询 相关联标签总数-->
+    <select id="countTagByArticleId" resultType="java.lang.Integer">
+        select
+        COUNT(*)
+        from
+        <include refid="tb"/>
+        where article_id = #{articleId,jdbcType=INTEGER}
+    </select>
+
+    <!--根据 标签id 获取相关联文章的id 列表-->
+    <select id="getArticleIdsByTagId" resultType="com.vtkd.ssm.blog.entity.ArticleTagRef">
+        select
+        article_id
+        from
+        <include refid="tb"/>
+        where tag_id = #{tagId,jdbcType=INTEGER}
+    </select>
+
+    <!--根据 文章id 获取相关联标签 列表-->
+    <select id="getTagListByArticleId" parameterType="java.lang.Integer" resultType="com.vtkd.ssm.blog.entity.Tag">
+        select
+        t.tag_id, t.tag_name
+        from tag t, article_tag_ref atr
+        where atr.article_id = #{articleId,jdbcType=INTEGER} AND
+              t.tag_id = atr.tag_id
+    </select>
+
+    <!--添加 文章和标签的映射关系-->
+    <insert id="insertArticleTagRef">
+        insert into
+        <include refid="tb"/>
+        (<include refid="Base_Column_List"/>)
+        values
+        (#{articleId, jdbcType=INTEGER}, #{tagId, jdbcType=INTEGER})
+    </insert>
+
+    <!--删除 文章和标签的映射关系-->
+    <delete id="deleteByArticleId" parameterType="java.lang.Integer">
+        delete from
+        <include refid="tb"/>
+        where
+        article_id = #{articleId,jdbcType=INTEGER}
+    </delete>
+
+</mapper>

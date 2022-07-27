@@ -33,8 +33,7 @@ public class BackTagController {
     @RequestMapping("")
     public ModelAndView tagListView() {
         ModelAndView modelAndView = new ModelAndView();
-        // todo 还没有进行文件数的查询
-        List<Tag> tags = tagService.listTag();
+        List<Tag> tags = tagService.listTagWithCount();
         modelAndView.addObject("tagList", tags);
 
         modelAndView.setViewName("Admin/Tag/index");
@@ -89,14 +88,7 @@ public class BackTagController {
      */
     @RequestMapping("/delete/{tagId}")
     public String deleteTagById(@PathVariable("tagId")Integer tagId){
-        Tag tagById = tagService.getTagById(tagId);
-        // todo 这里是不对的 是在查询tag的时候赋值 articleCount
-        tagById.setArticleCount(1);
-        Integer articleCount = tagById.getArticleCount();
-        if (articleCount == 0){
-            tagService.deleteTagById(tagId);
-        }
-
+        tagService.deleteTagById(tagId);
         return "redirect:/admin/tag";
     }
 

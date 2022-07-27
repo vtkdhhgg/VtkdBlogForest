@@ -21,8 +21,19 @@ public class Tag implements Serializable {
      */
     private Integer articleCount;
 
-    public Tag(){
+    public Tag(Integer tagId){
+        this.tagId = tagId;
+    }
 
+    public Tag(Integer tagId, String tagName, String tagDescription) {
+        this.tagId = tagId;
+        this.tagName = tagName;
+        this.tagDescription = tagDescription;
+    }
+
+    public Tag(Integer tagId, String tagName) {
+        this.tagId = tagId;
+        this.tagName = tagName;
     }
 
     public Tag(Integer tagId, String tagName, String tagDescription, Integer articleCount) {

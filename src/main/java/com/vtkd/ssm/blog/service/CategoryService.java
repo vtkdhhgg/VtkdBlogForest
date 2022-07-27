@@ -1,4 +1,4 @@
-package com.vtkd.ssm.blog.mapper;
+package com.vtkd.ssm.blog.service;
 
 import com.github.pagehelper.PageInfo;
 import com.vtkd.ssm.blog.entity.Category;
@@ -6,12 +6,12 @@ import com.vtkd.ssm.blog.entity.Category;
 import java.util.List;
 
 /**
- * 分类 数据层接口
+ * 分类 服务层接口
  *
  * @author 君上
  * @date 2022-7-26 下午
  */
-public interface CategoryMapper {
+public interface CategoryService {
 
 
     /**
@@ -19,21 +19,21 @@ public interface CategoryMapper {
      * @param categoryId id
      * @return 影响行数
      */
-    int deleteCategoryById(Integer categoryId);
+    void deleteCategoryById(Integer categoryId);
 
     /**
      * 修改 分类
      * @param category 分类
      * @return 影响行数
      */
-    int updateCategory(Category category);
+    void updateCategory(Category category);
 
     /**
      * 添加分类
      * @param category 分类
      * @return 影响行数
      */
-    int insertCategory(Category category);
+    void insertCategory(Category category);
 
 
     /**
@@ -59,8 +59,9 @@ public interface CategoryMapper {
     PageInfo<Category> pageListCategory(Integer pageSize, Integer pageIndex);
 
 
-
-
-
-
+    /**
+     * 查询所有标签 和 文章数量
+     * @return
+     */
+    List<Category> listCategoryWithCount();
 }

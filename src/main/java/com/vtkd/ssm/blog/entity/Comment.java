@@ -22,8 +22,15 @@ public class Comment implements Serializable {
     private String commentAgent; // 浏览器信息
     private String commentIp; // ip
     private Date commentCreateTime; // 评论时间
-    private Integer commentRole; // 角色 是否为管理员
+    private Integer commentRole; // 角色 1 管理员, 0访客
     private Integer commentUserId; // 评论id 可能为空
+
+    /**
+     * 非数据库字段
+     */
+    private Article article;
+
+
 
     public Comment() {
     }
@@ -184,5 +191,13 @@ public class Comment implements Serializable {
                 ", commentRole=" + commentRole +
                 ", commentUserId=" + commentUserId +
                 '}';
+    }
+
+    public Article getArticle() {
+        return article;
+    }
+
+    public void setArticle(Article article) {
+        this.article = article;
     }
 }

@@ -23,21 +23,22 @@
 
     <sql id="Base_Column_List">
         article_id,article_user_id,article_title,article_content,article_view_count,article_comment_count
-            article_like_count,article_is_comment,article_status,article_order,article_update_time,article_create_time
+            ,article_like_count,article_is_comment,article_status,article_order,article_update_time,article_create_time
             ,article_summary,article_thumbnail
     </sql>
 
     <!--添加 文章-->
-    <insert id="insertArticle" parameterType="com.vtkd.ssm.blog.entity.Article" useGeneratedKeys="true" keyProperty="linkId">
+    <insert id="insertArticle" parameterType="com.vtkd.ssm.blog.entity.Article" useGeneratedKeys="true"
+            keyProperty="articleId">
         insert into
         <include refid="tb"/>
         (<include refid="Base_Column_List"/>)
         values (#{articleId, jdbcType=INTEGER},#{articleUserId, jdbcType=INTEGER}, #{articleTitle, jdbcType=VARCHAR},
         #{articleContent, jdbcType=VARCHAR}
-        , #{articleViewCount, jdbcType=INTEGER}, #{articleLikeCount, jdbcType=INTEGER},
+        , #{articleViewCount, jdbcType=INTEGER}, #{articleCommentCount, jdbcType=INTEGER}, #{articleLikeCount, jdbcType=INTEGER},
         #{articleIsComment, jdbcType=INTEGER},#{articleStatus, jdbcType=INTEGER},#{articleOrder, jdbcType=INTEGER}
         , #{articleUpdateTime, jdbcType=TIMESTAMP}, #{articleCreateTime, jdbcType=TIMESTAMP},
-        #{articleSummary, jdbcType=VARCHAR}, #{articleThumbanil, jdbcType=VARCHAR})
+        #{articleSummary, jdbcType=VARCHAR}, #{articleThumbnail,jdbcType=VARCHAR})
     </insert>
 
     <!--修改文章-->
@@ -59,40 +60,84 @@
             <if test="articleSummary != null">article_summary = #{articleSummary},</if>
             <if test="articleThumbnail != null">article_thumbnail = #{articleThumbnail},</if>
         </set>
-        where article_id = #{articleId jdbcType=INTEGER}
+        where article_id = #{articleId, jdbcType=INTEGER}
     </update>
 
-    <!--删除 link-->
-    <delete id="deleteArticle" parameterType="java.lang.Integer">
-        delete from
-        <include refid="tb"/>
-        where article_id = #{articleId jdbcType=INTEGER}
-    </delete>
-
-    <!--id 查询 link-->
-    <select id="getArticleById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-        select
-            <include refid="Base_Column_List"/>
-        from
-        <include refid="tb"/>
-        where article_id = #{articleId jdbcType=INTEGER}
-    </select>
-
-    <!--根据 状态 查询 link列表 -->
-    <select id="listArticle" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    <!-- 分页 查询 文章-->
+    <select id="pageArticle" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from
         <include refid="tb"/>
         <where>
-            <if test="articleStatus != null">article_Status = #{articleStatus}</if>
+            <if test="status != null">article_status = #{status}</if>
         </where>
+        limit #{pageIndex, jdbcType=INTEGER}, #{pageSize, jdbcType=INTEGER}
+    </select>
+
+    <!--删除 link-->
+    <delete id="deleteArticle" parameterType="java.lang.Integer">
+        delete from
+        <include refid="tb"/>
+        where article_id = #{articleId, jdbcType=INTEGER}
+    </delete>
+
+    <!--id 查询 link-->
+    <select id="getArticleById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from
+        <include refid="tb"/>
+        where article_id = #{articleId, jdbcType=INTEGER}
+    </select>
+
+    <!--根据 状态 查询 文章列表 -->
+    <select id="listArticle" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from
+        <include refid="tb"/>
+        where article_sattus = 1
         ORDER BY article_status DESC, article_order DESC, article_id ASC
+    </select>
+
+    <!--根据条件查询文章列表-->
+    <select id="findAll" resultMap="BaseResultMap">
+        SELECT
+        article.*
+        FROM
+        article
+        <where>
+            <if test="status != null">
+                article.article_status = #{status} AND
+            </if>
+            <if test="keywords != null">
+                article.article_title LIKE concat(concat('%',#{keywords}),'%') AND
+            </if>
+            <if test="userId != null">
+                article.article_user_id = #{userId} AND
+            </if>
+            <if test="categoryId != null">
+                article.article_id IN (
+                SELECT article_category_ref.article_id FROM article_category_ref
+                WHERE article_category_ref.category_id = #{categoryId}
+                ) AND
+            </if>
+            <if test="tagId != null">
+                article.article_id IN (
+                SELECT article_tag_ref.article_id FROM article_tag_ref
+                WHERE article_tag_ref.tag_id = #{tagId}
+                ) AND
+            </if>
+        1 = 1
+        </where>
+        ORDER BY `article`.`article_order` DESC, `article`.`article_id` DESC
     </select>
 
     <!--根据状态统计 文章总数-->
     <select id="countArticle" resultType="Integer">
-        SELECT COUNT(*) FROM <include refid="tb"/>
+        SELECT COUNT(*) FROM
+        <include refid="tb"/>
         <where>
             <if test="articleStatus != null">article_Status = #{articleStatus}</if>
         </where>

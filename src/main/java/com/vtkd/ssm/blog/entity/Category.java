@@ -17,6 +17,11 @@ public class Category implements Serializable {
     private Integer categoryOrder; // 排序值
     private String categoryIcon; // 图标
 
+    /**
+     * 文章数量（非数据库字段）
+     */
+    private Integer articleCount;
+
     public Category(Integer categoryId, Integer categoryPid, String categoryName, String categoryDescription, Integer categoryOrder, String categoryIcon) {
         this.categoryId = categoryId;
         this.categoryPid = categoryPid;
@@ -26,7 +31,31 @@ public class Category implements Serializable {
         this.categoryIcon = categoryIcon;
     }
 
+    public Category(Integer categoryId, String categoryName){
+        this.categoryId = categoryId;
+        this.categoryName = categoryName;
+    }
+
     public Category() {
+    }
+
+    public Category(Integer categoryId, Integer categoryPid, String categoryName) {
+        this.categoryId = categoryId;
+        this.categoryPid = categoryPid;
+        this.categoryName = categoryName;
+    }
+
+    public Category(Integer categoryId){
+        this.categoryId = categoryId;
+    }
+
+    /**
+     * 未分类
+     *
+     * @return 分类
+     */
+    public static Category Default() {
+        return new Category(100000000, "未分类");
     }
 
     public Integer getCategoryId() {
@@ -105,5 +134,13 @@ public class Category implements Serializable {
                 ", categoryOrder=" + categoryOrder +
                 ", categoryIcon='" + categoryIcon + '\'' +
                 '}';
+    }
+
+    public Integer getArticleCount() {
+        return articleCount;
+    }
+
+    public void setArticleCount(Integer articleCount) {
+        this.articleCount = articleCount;
     }
 }

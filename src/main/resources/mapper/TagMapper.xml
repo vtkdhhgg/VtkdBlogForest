@@ -59,7 +59,7 @@
         where tag_id = #{tagId,jdbcType=INTEGER}
     </delete>
 
-    <!--根据 status 获取 标签 总数-->
+    <!--标签 总数-->
     <select id="countTag" resultType="Integer">
         SELECT COUNT(*) FROM
         <include refid="tb"/>

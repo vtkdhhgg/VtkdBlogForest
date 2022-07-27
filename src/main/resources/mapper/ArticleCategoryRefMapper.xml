@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vtkd.ssm.blog.mapper.ArticleCategoryRefMapper">
+
+
+    <sql id="tb">article_category_ref</sql>
+
+    <sql id="Base_Column_List">
+        article_id, category_id
+    </sql>
+
+    <!--根据 分类id 查询 相关联文章总数-->
+    <select id="countArticleByCategoryId" resultType="java.lang.Integer">
+        select
+        COUNT(*)
+        from
+        <include refid="tb"/>
+        where category_id = #{categoryId, jdbcType=INTEGER}
+    </select>
+
+
+    <!--根据 文章id 查询 相关联分类总数-->
+    <select id="countCategoryByArticleId" resultType="java.lang.Integer">
+        select
+        COUNT(*)
+        from
+        <include refid="tb"/>
+        where article_id = #{articleId,jdbcType=INTEGER}
+    </select>
+
+    <!--根据 分类id 获取相关联文章的id 列表-->
+    <select id="getArticleIdsByCategoryId" resultType="com.vtkd.ssm.blog.entity.ArticleCategoryRef">
+        select
+        article_id
+        from
+        <include refid="tb"/>
+        where category_id = #{categoryId,jdbcType=INTEGER}
+    </select>
+
+    <!--根据 文章 获取相关联分类 列表-->
+    <select id="getCategoryListByArticleId" parameterType="java.lang.Integer" resultType="com.vtkd.ssm.blog.entity.Category">
+        select
+        c.category_id, c.category_pid, c.category_name
+        from
+        category c, article_category_ref acr
+        where acr.article_id = #{articleId,jdbcType=INTEGER} AND
+              c.category_id = acr.category_id
+    </select>
+
+    <!--添加 文章和分类的映射关系-->
+    <insert id="insertArticleCategoryRef" useGeneratedKeys="true">
+        insert into
+        <include refid="tb"/>
+        (<include refid="Base_Column_List"/>)
+        values
+        (#{articleId, jdbcType=INTEGER}, #{categoryId, jdbcType=INTEGER})
+    </insert>
+
+    <!--删除 文章和分类的映射关系-->
+    <delete id="deleteByArticleId" parameterType="java.lang.Integer">
+        delete from
+        <include refid="tb"/>
+        where
+        article_id = #{articleId,jdbcType=INTEGER}
+    </delete>
+
+</mapper>
