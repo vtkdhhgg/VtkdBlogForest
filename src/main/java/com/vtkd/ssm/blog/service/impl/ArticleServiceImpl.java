@@ -4,10 +4,7 @@ import cn.hutool.log.Log;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.vtkd.ssm.blog.entity.*;
-import com.vtkd.ssm.blog.mapper.ArticleCategoryRefMapper;
-import com.vtkd.ssm.blog.mapper.ArticleMapper;
-import com.vtkd.ssm.blog.mapper.ArticleTagRefMapper;
-import com.vtkd.ssm.blog.mapper.UserMapper;
+import com.vtkd.ssm.blog.mapper.*;
 import com.vtkd.ssm.blog.service.ArticleService;
 import com.vtkd.ssm.blog.service.CategoryService;
 import lombok.extern.slf4j.Slf4j;
@@ -42,6 +39,9 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private CommentMapper commentMapper;
 
 
     @Override
@@ -122,13 +122,17 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void deleteArticle(Integer articleId) {
         try {
+            // 删除文章的 同时也要删除 分类, 标签, 评论
             articleMapper.deleteArticle(articleId);
 
             acMapper.deleteByArticleId(articleId);
 
             atMapper.deleteByArticleId(articleId);
+
+            commentMapper.deleteCommentByArticleId(articleId);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -262,7 +266,15 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public List<Article> listRecentArticle(Integer userId, Integer limit) {
-        return null;
+        List<Article> articles = null;
+        try {
+            articles = articleMapper.listRecentArticle(userId, limit);
+        }catch (Exception e){
+            e.printStackTrace();
+            log.error("查询最新文章失败, userId:{}, limit:{}, cause:{}", userId, limit, e);
+        }
+
+        return articles;
     }
 
     @Override

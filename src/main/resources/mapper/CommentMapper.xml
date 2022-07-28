@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vtkd.ssm.blog.mapper.CommentMapper">
+
+    <resultMap id="BaseResultMap" type="com.vtkd.ssm.blog.entity.Comment">
+        <id column="comment_Id" property="commentId" jdbcType="INTEGER"/>
+        <result column="comment_pid" property="commentPid" jdbcType="INTEGER"/>
+        <result column="comment_pname" property="commentPname" jdbcType="VARCHAR"/>
+        <result column="comment_article_id" property="commentArticleId" jdbcType="INTEGER"/>
+        <result column="comment_author_name" property="commentAuthorName" jdbcType="VARCHAR"/>
+        <result column="comment_author_email" property="commentAuthorEmail" jdbcType="VARCHAR"/>
+        <result column="comment_author_url" property="commentAuthorUrl" jdbcType="VARCHAR"/>
+        <result column="comment_author_avatar" property="commentAuthorAvatar" jdbcType="VARCHAR"/>
+        <result column="comment_content" property="commentContent" jdbcType="VARCHAR"/>
+        <result column="comment_agent" property="commentAgent" jdbcType="VARCHAR"/>
+        <result column="comment_ip" property="commentIp" jdbcType="VARCHAR"/>
+        <result column="comment_create_time" property="commentCreateTime" jdbcType="TIMESTAMP"/>
+        <result column="comment_role" property="commentRole" jdbcType="INTEGER"/>
+        <result column="comment_user_id" property="commentUserId" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="tb">comment</sql>
+
+    <sql id="Base_Column_List">
+        comment_id,
+        comment_pid,
+        comment_pname,
+        comment_article_id,
+        comment_author_name,
+        comment_author_email,
+        comment_author_url,
+        comment_author_avatar,
+        comment_content,
+        comment_agent,
+        comment_ip,
+        comment_create_time,
+        comment_role,
+        comment_user_id
+    </sql>
+
+    <!--根据条件查询 所有评论-->
+    <select id="findAll" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from
+        <include refid="tb"/>
+        <where>
+            <if test="userId != null">
+                comment_user_id = #{userId}
+            </if>
+        </where>
+        order by `comment_create_time` DESC
+    </select>
+
+    <!--根据 comment_pid 查询comment-->
+    <select id="getCommentByPid" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        From
+        <include refid="tb"/>
+        where comment_pid = #{commentPid, jdbcType=INTEGER}
+        order by `comment_create_time` DESC
+    </select>
+
+    <!--根据 文章id 查询我被评论的评论-->
+    <select id="getReceiveCommentByArticleId" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from
+        <include refid="tb"/>
+        where comment_id IN
+        (select
+        comment_id
+        from
+        comment
+        where comment_article_id = #{commentArticleId, jdbcType=INTEGER}
+        )
+        ORDER BY comment_create_time desc
+    </select>
+
+    <!--根据ID查询评论-->
+    <select id="getCommentById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from
+        <include refid="tb"/>
+        where comment_id = #{comment_id, jdbcType=INTEGER}
+    </select>
+
+    <!--更新 评论-->
+    <update id="updateComment" parameterType="com.vtkd.ssm.blog.entity.Comment">
+        update
+        <include refid="tb"/>
+        <set>
+            <if test="commentPid != null">comment_pid = #{commentPid},</if>
+            <if test="commentPname != null">comment_pname = #{commentPname},</if>
+            <if test="commentArticleId != null">comment_article_id = #{commentArticleId},</if>
+            <if test="commentAuthorName != null">comment_author_name = #{commentAuthorName},</if>
+            <if test="commentAuthorEmail != null">comment_author_email = #{commentAuthorEmail},</if>
+            <if test="commentAuthorUrl != null">comment_author_url = #{commentAuthorUrl},</if>
+            <if test="commentAuthorAvatar != null">comment_author_avatar = #{commentAuthorAvatar},</if>
+            <if test="commentContent != null">comment_content = #{commentContent},</if>
+            <if test="commentAgent != null">comment_agent = #{commentAgent},</if>
+            <if test="commentIp != null">comment_ip = #{commentIp},</if>
+            <if test="commentCreateTime != null">comment_create_time = #{commentCreateTime},</if>
+            <if test="commentRole != null">comment_role = #{commentRole},</if>
+            <if test="commentUserId != null">comment_user_id = #{commentUserId}</if>
+        </set>
+        where comment_id = #{commentId, jdbcType=INTEGER}
+    </update>
+
+    <!--添加评论-->
+    <insert id="insertComment" parameterType="com.vtkd.ssm.blog.entity.Comment" useGeneratedKeys="true"
+            keyProperty="commentId">
+        insert into
+        <include refid="tb"/>
+        (<include refid="Base_Column_List"/>)
+        values
+        (#{commentId, jdbcType=INTEGER},#{commentPid, jdbcType=INTEGER}, #{commentPname, jdbcType=VARCHAR},#{commentArticleId, jdbcType=INTEGER},
+        #{commentAuthorName, jdbcType=VARCHAR},#{commentAuthorEmail, jdbcType=VARCHAR},
+        #{commentAuthorUrl, jdbcType=VARCHAR},#{commentAuthorAvatar, jdbcType=VARCHAR},
+        #{commentContent, jdbcType=VARCHAR},#{commentAgent, jdbcType=VARCHAR},#{commentIp, jdbcType=VARCHAR},
+        #{commentCreateTime, jdbcType=TIMESTAMP},#{commentRole, jdbcType=INTEGER},#{commentUserId, jdbcType=INTEGER})
+    </insert>
+
+    <!-- 删除评论-->
+    <delete id="deleteCommentById" parameterType="java.lang.Integer">
+        delete from
+        <include refid="tb"/>
+        where comment_id = #{commentId, jdbcType=INTEGER} or comment_pid = #{commentId, jdbcType=INTEGER}
+    </delete>
+
+    <!-- 删除评论 根据 文章id-->
+    <delete id="deleteCommentByArticleId" parameterType="java.lang.Integer">
+        delete from
+        <include refid="tb"/>
+        where comment_article_id = #{articleId,jdbcType=INTEGER}
+    </delete>
+
+    <!--查询最新评论-->
+    <select id="listRecentComment" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from
+        <include refid="tb"/>
+        <where>
+            <if test="userId != null">comment_user_id = #{userId}</if>
+        </where>
+        order by `comment_create_time` DESC, `comment_id` DESC
+        limit 0, #{limit, jdbcType=INTEGER}
+    </select>
+
+
+</mapper>

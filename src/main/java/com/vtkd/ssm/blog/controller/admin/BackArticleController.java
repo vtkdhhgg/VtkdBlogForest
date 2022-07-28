@@ -14,10 +14,7 @@ import com.vtkd.ssm.blog.service.TagService;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
@@ -245,6 +242,12 @@ public class BackArticleController {
         return "redirect:/admin/article";
     }
 
+    /**
+     * 删除文章
+     * @param articleId
+     * @param session
+     * @return
+     */
     @RequestMapping("/delete/{articleId}")
     public String deleteArticle(@PathVariable("articleId")Integer articleId, HttpSession session){
         String returnView = "redirect:/admin/article";
@@ -262,4 +265,42 @@ public class BackArticleController {
         articleService.deleteArticle(articleId);
         return returnView;
     }
+
+    /**
+     * 添加草稿
+     * @param articleParam 精简文章
+     * @param session
+     * @return
+     */
+    @RequestMapping(value = "/insertDraftSubmit", method = RequestMethod.POST)
+    public String insertDraftArticleSubmit(ArticleParam articleParam, HttpSession session){
+        if (articleParam == null){
+            return "redirect:/admin";
+        }
+        User user = (User) session.getAttribute("user");
+        Article article = new Article();
+        article.setArticleTitle(articleParam.getArticleTitle());
+        article.setArticleContent(articleParam.getArticleContent());
+        article.setArticleStatus(articleParam.getArticleStatus());
+        article.setArticleCreateTime(new Date());
+        article.setArticleUpdateTime(article.getArticleCreateTime());
+        article.setArticleOrder(1);
+        article.setArticleViewCount(0);
+        article.setArticleIsComment(1);
+        article.setArticleLikeCount(0);
+        article.setArticleViewCount(0);
+        article.setArticleUserId(user.getUserId());
+
+        // 获取缩略 文章
+        String summaryContent = HtmlUtil.cleanHtmlTag(articleParam.getArticleContent());
+        if (Objects.requireNonNull(summaryContent).length() > 150){
+            summaryContent = summaryContent.substring(0, 150);
+        }
+        article.setArticleSummary(summaryContent);
+
+        articleService.insertArticle(article);
+
+        return "redirect:/admin";
+    }
+
 }

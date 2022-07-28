@@ -72,9 +72,20 @@ public interface ArticleMapper {
 
     /**
      * 根据 criteria 查询 文章
-     * @param criteria
-     * @return
+     *
+     * @param criteria 条件
+     * @return 文章
      */
     List<Article> findAll(HashMap<String, Object> criteria);
+
+    /**
+     * 获取最新文章
+     *
+     * @param userId 用户id
+     * @param limit 查询数量
+     * @return 文章列表
+     */
+    List<Article> listRecentArticle(@Param("userId") Integer userId,
+                                    @Param("limit") Integer limit);
 
 }

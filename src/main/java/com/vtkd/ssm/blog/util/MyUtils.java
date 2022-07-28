@@ -14,6 +14,11 @@ import java.util.Enumeration;
  */
 public class MyUtils {
 
+    /**
+     * 获取用户ip
+     * @param request
+     * @return
+     */
     public static String getIpAddress(HttpServletRequest request) {
         String ip = null;
 
@@ -51,5 +56,18 @@ public class MyUtils {
             ip = request.getRemoteAddr();
         }
         return ip;
+    }
+
+    /**
+     * 获取用户 浏览器
+     * @param request
+     * @return
+     */
+    public static String getUserAgent(HttpServletRequest request){
+        String header = request.getHeader("User-Agent");
+        if (header.isEmpty() || header.isBlank()){
+            header = "未知浏览器";
+        }
+        return header;
     }
 }

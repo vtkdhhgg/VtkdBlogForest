@@ -21,19 +21,12 @@ public class Tag implements Serializable {
      */
     private Integer articleCount;
 
+    public Tag(){
+
+    }
+
     public Tag(Integer tagId){
         this.tagId = tagId;
-    }
-
-    public Tag(Integer tagId, String tagName, String tagDescription) {
-        this.tagId = tagId;
-        this.tagName = tagName;
-        this.tagDescription = tagDescription;
-    }
-
-    public Tag(Integer tagId, String tagName) {
-        this.tagId = tagId;
-        this.tagName = tagName;
     }
 
     public Tag(Integer tagId, String tagName, String tagDescription, Integer articleCount) {
@@ -67,21 +60,12 @@ public class Tag implements Serializable {
         this.tagDescription = tagDescription;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        Tag tag = (Tag) o;
-        return getTagId().equals(tag.getTagId()) && getTagName().equals(tag.getTagName()) && getTagDescription().equals(tag.getTagDescription());
+    public Integer getArticleCount() {
+        return articleCount;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(getTagId(), getTagName(), getTagDescription());
+    public void setArticleCount(Integer articleCount) {
+        this.articleCount = articleCount;
     }
 
     @Override
@@ -90,14 +74,7 @@ public class Tag implements Serializable {
                 "tagId=" + tagId +
                 ", tagName='" + tagName + '\'' +
                 ", tagDescription='" + tagDescription + '\'' +
+                ", articleCount=" + articleCount +
                 '}';
-    }
-
-    public Integer getArticleCount() {
-        return articleCount;
-    }
-
-    public void setArticleCount(Integer articleCount) {
-        this.articleCount = articleCount;
     }
 }

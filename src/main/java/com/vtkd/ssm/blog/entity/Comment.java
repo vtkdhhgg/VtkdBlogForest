@@ -16,6 +16,9 @@ public class Comment implements Serializable {
     private String commentPname; // 上级评论名称
     private Integer commentArticleId; // 文章id
     private String commentAuthorName; // 评论人名称
+
+    private String commentAuthorEmail; // 评论人邮件
+
     private String commentAuthorUrl; // 评论人个人主页
     private String commentAuthorAvatar; // 评论人头像
     private String commentContent; // 内容
@@ -35,14 +38,13 @@ public class Comment implements Serializable {
     public Comment() {
     }
 
-    public Comment(Integer commentId, Integer commentPid, String commentPname, Integer commentArticleId, String commentAuthorName
-            , String commentAuthorUrl, String commentAuthorAvatar, String commentContent, String commentAgent
-            , String commentIp, Date commentCreateTime, Integer commentRole, Integer commentUserId) {
+    public Comment(Integer commentId, Integer commentPid, String commentPname, Integer commentArticleId, String commentAuthorName, String commentAuthorEmail, String commentAuthorUrl, String commentAuthorAvatar, String commentContent, String commentAgent, String commentIp, Date commentCreateTime, Integer commentRole, Integer commentUserId) {
         this.commentId = commentId;
         this.commentPid = commentPid;
         this.commentPname = commentPname;
         this.commentArticleId = commentArticleId;
         this.commentAuthorName = commentAuthorName;
+        this.commentAuthorEmail = commentAuthorEmail;
         this.commentAuthorUrl = commentAuthorUrl;
         this.commentAuthorAvatar = commentAuthorAvatar;
         this.commentContent = commentContent;
@@ -166,12 +168,12 @@ public class Comment implements Serializable {
             return false;
         }
         Comment comment = (Comment) o;
-        return getCommentId().equals(comment.getCommentId()) && getCommentPid().equals(comment.getCommentPid()) && getCommentPname().equals(comment.getCommentPname()) && getCommentArticleId().equals(comment.getCommentArticleId()) && getCommentAuthorName().equals(comment.getCommentAuthorName()) && getCommentAuthorUrl().equals(comment.getCommentAuthorUrl()) && getCommentAuthorAvatar().equals(comment.getCommentAuthorAvatar()) && getCommentContent().equals(comment.getCommentContent()) && getCommentAgent().equals(comment.getCommentAgent()) && getCommentIp().equals(comment.getCommentIp()) && getCommentCreateTime().equals(comment.getCommentCreateTime()) && getCommentRole().equals(comment.getCommentRole()) && getCommentUserId().equals(comment.getCommentUserId());
+        return getCommentId().equals(comment.getCommentId()) && getCommentPid().equals(comment.getCommentPid()) && getCommentPname().equals(comment.getCommentPname()) && getCommentArticleId().equals(comment.getCommentArticleId()) && getCommentAuthorName().equals(comment.getCommentAuthorName()) && getCommentAuthorEmail().equals(comment.getCommentAuthorEmail()) && getCommentAuthorUrl().equals(comment.getCommentAuthorUrl()) && getCommentAuthorAvatar().equals(comment.getCommentAuthorAvatar()) && getCommentContent().equals(comment.getCommentContent()) && getCommentAgent().equals(comment.getCommentAgent()) && getCommentIp().equals(comment.getCommentIp()) && getCommentCreateTime().equals(comment.getCommentCreateTime()) && getCommentRole().equals(comment.getCommentRole()) && getCommentUserId().equals(comment.getCommentUserId()) && getArticle().equals(comment.getArticle());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getCommentId(), getCommentPid(), getCommentPname(), getCommentArticleId(), getCommentAuthorName(), getCommentAuthorUrl(), getCommentAuthorAvatar(), getCommentContent(), getCommentAgent(), getCommentIp(), getCommentCreateTime(), getCommentRole(), getCommentUserId());
+        return Objects.hash(getCommentId(), getCommentPid(), getCommentPname(), getCommentArticleId(), getCommentAuthorName(), getCommentAuthorEmail(), getCommentAuthorUrl(), getCommentAuthorAvatar(), getCommentContent(), getCommentAgent(), getCommentIp(), getCommentCreateTime(), getCommentRole(), getCommentUserId(), getArticle());
     }
 
     @Override
@@ -182,6 +184,7 @@ public class Comment implements Serializable {
                 ", commentPname='" + commentPname + '\'' +
                 ", commentArticleId=" + commentArticleId +
                 ", commentAuthorName='" + commentAuthorName + '\'' +
+                ", commentAuthorEmail='" + commentAuthorEmail + '\'' +
                 ", commentAuthorUrl='" + commentAuthorUrl + '\'' +
                 ", commentAuthorAvatar='" + commentAuthorAvatar + '\'' +
                 ", commentContent='" + commentContent + '\'' +
@@ -190,6 +193,7 @@ public class Comment implements Serializable {
                 ", commentCreateTime=" + commentCreateTime +
                 ", commentRole=" + commentRole +
                 ", commentUserId=" + commentUserId +
+                ", article=" + article +
                 '}';
     }
 
@@ -199,5 +203,13 @@ public class Comment implements Serializable {
 
     public void setArticle(Article article) {
         this.article = article;
+    }
+
+    public String getCommentAuthorEmail() {
+        return commentAuthorEmail;
+    }
+
+    public void setCommentAuthorEmail(String commentAuthorEmail) {
+        this.commentAuthorEmail = commentAuthorEmail;
     }
 }

@@ -3,6 +3,7 @@ package com.vtkd.ssm.blog.service;
 import com.github.pagehelper.PageInfo;
 import com.vtkd.ssm.blog.entity.Article;
 import com.vtkd.ssm.blog.mapper.ArticleMapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.HashMap;
 import java.util.List;
@@ -12,23 +13,26 @@ import java.util.List;
  *
  * @author 君上
  * @date 2022-7-26
- * */
+ */
 public interface ArticleService {
 
     /**
      * 添加文章
+     *
      * @param article 文章
      */
     void insertArticle(Article article);
 
     /**
      * 获取文章评论总数
+     *
      * @return 评论总数
      */
     Integer countArticleComment();
 
     /**
      * 获取文章浏览总量
+     *
      * @return 浏览总量
      */
     Integer countArticleView();
@@ -43,6 +47,7 @@ public interface ArticleService {
 
     /**
      * 统计有这个标签的文章数
+     *
      * @param tagId 标签id
      * @return 文章数
      */
@@ -50,6 +55,7 @@ public interface ArticleService {
 
     /**
      * 根据 id 删除 文章
+     *
      * @param articleId id
      */
     void deleteArticle(Integer articleId);
@@ -63,12 +69,14 @@ public interface ArticleService {
 
     /**
      * 修改文章详细信息
+     *
      * @param article 文章
      */
     void updateArticleDetail(Article article);
 
     /**
      * 修改文章简单信息
+     *
      * @param article 文章
      */
     void updateArticle(Article article);
@@ -98,6 +106,7 @@ public interface ArticleService {
 
     /**
      * 根据 id 获取文章
+     *
      * @param articleId id
      * @return 文章
      */
@@ -182,13 +191,15 @@ public interface ArticleService {
      * 获取最新文章
      *
      * @param userId 用户id
-     * @param limit 查询数量
+     * @param limit  查询数量
      * @return 文章列表
      */
-    List<Article> listRecentArticle(Integer userId, Integer limit);
+    List<Article> listRecentArticle(Integer userId,
+                                    Integer limit);
 
     /**
      * 所有文章，不分页
+     *
      * @param criteria 查询条件
      * @return 文章列表
      */
@@ -203,13 +214,12 @@ public interface ArticleService {
 
     /**
      * 分页显示
+     *
      * @param pageIndex 第几页开始
-     * @param pageSize 一页显示多少
-     * @param criteria 查询条件
+     * @param pageSize  一页显示多少
+     * @param criteria  查询条件
      * @return 分页信息
      */
     PageInfo<Article> pageArticle(Integer pageIndex, Integer pageSize, HashMap<String, Object> criteria);
-
-
 
 }

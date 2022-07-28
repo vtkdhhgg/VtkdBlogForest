@@ -100,7 +100,7 @@ public class BackMenuController {
 
         menuService.deleteMenu(menuId);
 
-        return "redirect:admin/menu";
+        return "redirect:/admin/menu";
     }
 
 

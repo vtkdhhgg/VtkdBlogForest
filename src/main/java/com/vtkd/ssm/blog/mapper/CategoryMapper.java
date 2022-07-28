@@ -51,16 +51,11 @@ public interface CategoryMapper {
 
     /**
      * 分页查询分类
-     * // todo 暂时不写sql，等后面写完整个项目再来完成这个功能
+     *
      * @param pageSize 每页多少条
      * @param pageIndex 第几页
      * @return 分页数据
      */
     PageInfo<Category> pageListCategory(Integer pageSize, Integer pageIndex);
-
-
-
-
-
 
 }

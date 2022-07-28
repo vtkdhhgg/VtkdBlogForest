@@ -2,7 +2,12 @@ package com.vtkd.ssm.blog.controller.admin;
 
 import com.alibaba.fastjson2.JSON;
 import com.vtkd.ssm.blog.dto.JsonResult;
+import com.vtkd.ssm.blog.entity.Article;
+import com.vtkd.ssm.blog.entity.Comment;
 import com.vtkd.ssm.blog.entity.User;
+import com.vtkd.ssm.blog.enums.UserRole;
+import com.vtkd.ssm.blog.service.ArticleService;
+import com.vtkd.ssm.blog.service.CommentService;
 import com.vtkd.ssm.blog.service.UserService;
 import io.swagger.annotations.*;
 import io.swagger.models.auth.In;
@@ -12,14 +17,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.mail.Session;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Random;
+import java.util.*;
 
 import static com.vtkd.ssm.blog.util.MyUtils.*;
 
@@ -31,18 +34,41 @@ import static com.vtkd.ssm.blog.util.MyUtils.*;
 public class AdminController {
 
     @Autowired
-    UserService userService;
+    private UserService userService;
 
+    @Autowired
+    private ArticleService articleService;
+
+    @Autowired
+    private CommentService commentService;
 
     /**
      * 后台首页
      *
      * @return
      */
-    @ApiOperation(value = "跳转到后台首页",notes = "没有业务代码")
-    @RequestMapping(value = "/admin", method = RequestMethod.GET)
-    public String admin() {
-        return "Admin/index";
+    @ApiOperation(value = "跳转到后台首页")
+    @RequestMapping(value = "/admin")
+    public ModelAndView admin(HttpSession session) {
+        ModelAndView modelAndView = new ModelAndView();
+        User user = (User) session.getAttribute("user");
+        Integer userId = null;
+        if (!user.getUserRole().equals(UserRole.ADMIN.getValue())) {
+            // 管理员查询所有, 用户查询自己的
+            userId = user.getUserId();
+        }
+
+        // 文章列表
+        List<Article> articleList = articleService.listRecentArticle(userId, 5);
+        modelAndView.addObject("articleList", articleList);
+
+        // 评论列表
+        List<Comment> comments = commentService.listRecentComment(userId, 5);
+        modelAndView.addObject("commentList", comments);
+
+
+        modelAndView.setViewName("Admin/index");
+        return modelAndView;
     }
 
     /**

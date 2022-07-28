@@ -139,7 +139,7 @@ public class BackUserController {
      * 跳转到 inset user页面
      * @return
      */
-    @RequestMapping("/inset")
+    @RequestMapping("/insert")
     public ModelAndView insertUserView(){
         return new ModelAndView("Admin/User/insert");
     }

@@ -33,7 +33,7 @@
         <!--上传文件大小:50mb-->
         <property name="maxUploadSize" value="52428800"/>
         <property name="defaultEncoding" value="UTF-8"/>
-        <!--设置是否在文件或参数访问时延迟解析多部分请求。todo 不明白为什么要设置这个标签-->
+        <!--设置是否在文件或参数访问时延迟解析多部分请求。-->
         <property name="resolveLazily" value="true"/>
     </bean>
 
@@ -51,6 +51,7 @@
     <mvc:resources mapping="/js/**" location="/resource/assets/js/"/>
     <mvc:resources mapping="/img/**" location="/resource/assets/img/"/>
     <mvc:resources mapping="/plugin/**" location="/resource/assets/plugin/"/>
+    <mvc:resources mapping="/uploads/**" location="/uploads/"/>
 
 
     <!--注册拦截器-->

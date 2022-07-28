@@ -50,5 +50,11 @@
     </tr>
 </table>
 
+
+用户图片:
+    <img alt="用户头像\"
+         src="E:/JavaCode/MyBlog_Forest/out/artifacts/MyBlog_Forest_Web_exploded/uploads/2022/7/ac188573ec0e4e5498e72488064b19af_12.jpg">
+
+
 </body>
 </html>

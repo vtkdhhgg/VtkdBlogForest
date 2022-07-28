@@ -35,7 +35,8 @@
         (<include refid="Base_Column_List"/>)
         values (#{articleId, jdbcType=INTEGER},#{articleUserId, jdbcType=INTEGER}, #{articleTitle, jdbcType=VARCHAR},
         #{articleContent, jdbcType=VARCHAR}
-        , #{articleViewCount, jdbcType=INTEGER}, #{articleCommentCount, jdbcType=INTEGER}, #{articleLikeCount, jdbcType=INTEGER},
+        , #{articleViewCount, jdbcType=INTEGER}, #{articleCommentCount, jdbcType=INTEGER},
+        #{articleLikeCount, jdbcType=INTEGER},
         #{articleIsComment, jdbcType=INTEGER},#{articleStatus, jdbcType=INTEGER},#{articleOrder, jdbcType=INTEGER}
         , #{articleUpdateTime, jdbcType=TIMESTAMP}, #{articleCreateTime, jdbcType=TIMESTAMP},
         #{articleSummary, jdbcType=VARCHAR}, #{articleThumbnail,jdbcType=VARCHAR})
@@ -129,7 +130,7 @@
                 WHERE article_tag_ref.tag_id = #{tagId}
                 ) AND
             </if>
-        1 = 1
+            1 = 1
         </where>
         ORDER BY `article`.`article_order` DESC, `article`.`article_id` DESC
     </select>
@@ -141,6 +142,19 @@
         <where>
             <if test="articleStatus != null">article_Status = #{articleStatus}</if>
         </where>
+    </select>
+
+    <!--查询最新文章-->
+    <select id="listRecentArticle" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from
+        <include refid="tb"/>
+        <where>
+            <if test="userId != null">article_user_id = #{userId}</if>
+        </where>
+        order by `article_update_time` DESC, `article_id` DESC
+        limit 0, #{limit, jdbcType=INTEGER}
     </select>
 
 </mapper>
