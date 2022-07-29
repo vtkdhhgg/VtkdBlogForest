@@ -91,7 +91,10 @@
             <include refid="Base_Column_List"/>
         from
         <include refid="tb"/>
+            order by option_id ASC
         limit 1
     </select>
+
+
 
 </mapper>

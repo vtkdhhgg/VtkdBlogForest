@@ -45,7 +45,8 @@
     <delete id="deleteCategoryById" parameterType="java.lang.Integer">
         delete from
         <include refid="tb"/>
-        where category_id = #{categoryId, jdbcType=INTEGER}
+        where category_id = #{categoryId, jdbcType=INTEGER} or
+        category_pid = #{categoryId, jdbcType=INTEGER}
     </delete>
 
     <!--根据id查询-->
@@ -61,6 +62,14 @@
     <select id="listCategory" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
+        from
+        <include refid="tb"/>
+    </select>
+
+    <!--查询所有分类的数量-->
+    <select id="countCategory" resultType="java.lang.Integer">
+        select
+        COUNT(*)
         from
         <include refid="tb"/>
     </select>

@@ -74,5 +74,4 @@
         ORDER BY tag_id DESC
     </select>
 
-
 </mapper>

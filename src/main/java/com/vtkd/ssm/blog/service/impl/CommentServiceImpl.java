@@ -145,27 +145,13 @@ public class CommentServiceImpl implements CommentService {
         return comments;
     }
 
+    /**
+     * @param userId 用户id
+     * @return
+     */
     @Override
     public List<Comment> getReceiveComment(Integer userId) {
-        List<Comment> comments = null;
-
-        try {
-            HashMap<String, Object> criteria = new HashMap<String, Object>();
-            criteria.put("userId", userId);
-            List<Article> articles = articleMapper.findAll(criteria);
-            // 查询文章
-            if (!articles.isEmpty()) {
-                for (Article article : articles) {
-                    Integer pid = commentMapper.getCommentByArticleId(article.getArticleId());
-                    comments = commentMapper.getCommentByPid(pid);
-                }
-            }
-        }catch (Exception e){
-            e.printStackTrace();
-            log.error("查询 被回复的评论失败, userId:{}, cause:{}", userId, e);
-        }
-
-        return comments;
+        return null;
     }
 
     @Override
@@ -182,8 +168,6 @@ public class CommentServiceImpl implements CommentService {
             if (!articles.isEmpty()) {
                 for (Article article : articles) {
                     receiveComments = commentMapper.getReceiveCommentByArticleId(article.getArticleId());
-                    // 获取被评论的评论
-//                    receiveComments = commentMapper.getCommentByPid(pid);
                 }
             }
             pageInfo = new PageInfo<>(receiveComments);
@@ -224,6 +208,10 @@ public class CommentServiceImpl implements CommentService {
         List<Comment> comments = null;
         try {
             comments = commentMapper.listRecentComment(userId, limit);
+            for (Comment comment : comments) {
+                Article article = articleMapper.getArticleById(comment.getCommentArticleId());
+                comment.setArticle(article);
+            }
         }catch (Exception e){
             e.printStackTrace();
             log.error("查询最新评论失败, userId:{}, limit:{}, cause:{}", userId, limit, e);
@@ -233,11 +221,35 @@ public class CommentServiceImpl implements CommentService {
     }
 
     /**
-     * @param userId 用户id
+     * @param articleId 文章id
      * @return
      */
     @Override
-    public List<Comment> getCommentByUserId(Integer userId) {
-        return null;
+    public List<Comment> getCommentByArticleId(Integer articleId) {
+        List<Comment> comments = null;
+
+        try {
+            comments = commentMapper.getCommentByArticleId(articleId);
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.error("根据 文章id获取评论失败, articleId:{}, cause:{}",articleId, e);
+        }
+
+        return comments;
     }
+
+    @Override
+    public Integer countComment() {
+        Integer commentCount = null;
+
+        try {
+            commentCount = commentMapper.countComment();
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.error("获取评论总数失败,  cause:{}", e);
+        }
+
+        return commentCount;
+    }
+
 }

@@ -50,12 +50,9 @@ public interface CategoryMapper {
     List<Category> listCategory();
 
     /**
-     * 分页查询分类
-     *
-     * @param pageSize 每页多少条
-     * @param pageIndex 第几页
-     * @return 分页数据
+     * 查询所有标签数量
+     * @return
      */
-    PageInfo<Category> pageListCategory(Integer pageSize, Integer pageIndex);
+    Integer countCategory();
 
 }

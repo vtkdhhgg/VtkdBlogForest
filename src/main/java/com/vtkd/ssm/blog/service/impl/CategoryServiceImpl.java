@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
 /**
  * 分类 服务层接口实现
  *
@@ -30,8 +31,9 @@ public class CategoryServiceImpl implements CategoryService {
     public void deleteCategoryById(Integer categoryId) {
         try {
             // 先判断 有没有文章,没有文章才能删除
+            // 也一并把子分类删除
             Integer articleCount = acMapper.countArticleByCategoryId(categoryId);
-            if (articleCount ==  0){
+            if (articleCount == 0) {
                 categoryMapper.deleteCategoryById(categoryId);
             }
         } catch (Exception e) {
@@ -83,11 +85,6 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public PageInfo<Category> pageListCategory(Integer pageSize, Integer pageIndex) {
-        return null;
-    }
-
-    @Override
     public List<Category> listCategoryWithCount() {
 
         List<Category> categoryList = null;
@@ -99,11 +96,26 @@ public class CategoryServiceImpl implements CategoryService {
                 Integer articleCount = acMapper.countArticleByCategoryId(category.getCategoryId());
                 category.setArticleCount(articleCount);
             }
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             log.error("获取所有分类和文章数量失败, cause:{}", e);
         }
 
         return categoryList;
+    }
+
+
+    @Override
+    public Integer countCategory() {
+        Integer categoryCount = null;
+
+        try {
+            categoryCount = categoryMapper.countCategory();
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.error("获取所有分类数量失败, cause:{}", e);
+        }
+
+        return categoryCount;
     }
 }

@@ -1,6 +1,7 @@
 package com.vtkd.ssm.blog.service.impl;
 
 import com.github.pagehelper.PageInfo;
+import com.vtkd.ssm.blog.entity.Article;
 import com.vtkd.ssm.blog.entity.Tag;
 import com.vtkd.ssm.blog.mapper.ArticleTagRefMapper;
 import com.vtkd.ssm.blog.mapper.TagMapper;
@@ -94,11 +95,6 @@ public class TagServiceImpl implements TagService {
     }
 
     @Override
-    public PageInfo<Tag> pageListTag(Integer pageSize, Integer pageIndex) {
-        return null;
-    }
-
-    @Override
     public List<Tag> listTagWithCount() {
 
         List<Tag> tagList = null;
@@ -120,6 +116,15 @@ public class TagServiceImpl implements TagService {
 
     @Override
     public Integer countTag() {
-        return null;
+        Integer tagCount = null;
+
+        try {
+            tagCount = tagMapper.countTag();
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.error("获取标签总数失败,  cause:{}", e);
+        }
+
+        return tagCount;
     }
 }

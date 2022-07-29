@@ -41,7 +41,7 @@ public class OptionServiceImpl implements OptionService {
     }
 
     @Override
-    public List<Option> listOption() {
+    public Option listOption() {
         return optionMapper.listOption();
     }
 }

@@ -55,13 +55,6 @@ public interface CommentService {
                                   HashMap<String, Object> criteria);
 
     /**
-     * 根据用户id 获取评论
-     * @param userId 用户id
-     * @return 用户评论
-     */
-    List<Comment> getCommentByUserId(Integer userId);
-
-    /**
      * 根据 pid 查询评论
      * @param pid 父级评论
      * @return 评论
@@ -104,6 +97,16 @@ public interface CommentService {
     List<Comment> listRecentComment(Integer userId, Integer limit);
 
 
+    /**
+     * 根据 文章id 获取评论
+     * @param articleId 文章id
+     * @return 评论
+     */
+    List<Comment> getCommentByArticleId(Integer articleId);
 
-
+    /**
+     * 获取评论总数
+     * @return 评论总数
+     */
+    Integer countComment();
 }

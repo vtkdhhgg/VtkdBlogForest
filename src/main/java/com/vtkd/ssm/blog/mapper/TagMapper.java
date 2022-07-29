@@ -1,5 +1,6 @@
 package com.vtkd.ssm.blog.mapper;
 
+import com.vtkd.ssm.blog.entity.Article;
 import com.vtkd.ssm.blog.entity.Tag;
 
 import java.util.List;
@@ -60,6 +61,6 @@ public interface TagMapper {
      * @return
      */
     Integer countTag();
-    
+
     
 }

@@ -285,8 +285,8 @@ public class BackArticleController {
         article.setArticleCreateTime(new Date());
         article.setArticleUpdateTime(article.getArticleCreateTime());
         article.setArticleOrder(1);
-        article.setArticleViewCount(0);
         article.setArticleIsComment(1);
+        article.setArticleCommentCount(0);
         article.setArticleLikeCount(0);
         article.setArticleViewCount(0);
         article.setArticleUserId(user.getUserId());

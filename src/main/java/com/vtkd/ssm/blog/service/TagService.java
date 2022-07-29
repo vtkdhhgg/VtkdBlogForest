@@ -1,6 +1,7 @@
 package com.vtkd.ssm.blog.service;
 
 import com.github.pagehelper.PageInfo;
+import com.vtkd.ssm.blog.entity.Article;
 import com.vtkd.ssm.blog.entity.Tag;
 
 import java.util.List;
@@ -57,15 +58,6 @@ public interface TagService {
     List<Tag> listTag();
 
     /**
-     * 分页查询 tag
-     * // todo 完成整个项目再做
-     * @param pageSize 每页数量
-     * @param pageIndex 从那页开始
-     * @return 标签分页的数据
-     */
-    PageInfo<Tag> pageListTag(Integer pageSize, Integer pageIndex);
-
-    /**
      * 查询所有标签 和 文章数量
      * @return
      */
@@ -76,6 +68,5 @@ public interface TagService {
      * @return
      */
     Integer countTag();
-    
-    
+
 }

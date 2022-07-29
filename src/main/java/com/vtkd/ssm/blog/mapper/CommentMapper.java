@@ -46,34 +46,12 @@ public interface CommentMapper {
     List<Comment> findAll(HashMap<String, Object> criteria);
 
     /**
-     * 分页查询 评论
-     * @param pageIndex 起始页
-     * @param pageSize 每页数据量
-     * @return 分页信息
-     */
-    PageInfo<Comment> pageComment(@Param("pageIndex") Integer pageIndex,
-                                  @Param("pageSize") Integer pageSize);
-
-    /**
-     * 根据用户id 获取评论
-     * @param userId 用户id
-     * @return 用户评论
-     */
-    List<Comment> getCommentByUserId(Integer userId);
-
-    /**
      * 根据 pid 查询评论
      * @param pid 父级评论
      * @return 评论
      */
     List<Comment> getCommentByPid(Integer pid);
 
-    /**
-     * 根据 文章id 查询评论
-     * @param articleId 文章id
-     * @return 评论
-     */
-    Integer getCommentByArticleId(Integer articleId);
 
     /**
      * 根据 文章id 查询 评论我的
@@ -108,4 +86,17 @@ public interface CommentMapper {
      */
     List<Comment> listRecentComment(@Param("userId") Integer userId,
                                     @Param("limit") Integer limit);
+
+    /**
+     * 根据 文章id 获取评论
+     * @param articleId 文章id
+     * @return 评论
+     */
+    List<Comment> getCommentByArticleId(Integer articleId);
+
+    /**
+     * 获取评论总数量
+     * @return 评论总数
+     */
+    Integer countComment();
 }

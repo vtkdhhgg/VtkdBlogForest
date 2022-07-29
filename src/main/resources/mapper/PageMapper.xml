@@ -72,8 +72,8 @@
         FROM
         <include refid="tb"/>
         <where>
-            <if test="pageStatus != null">page_status = #{pageStatus, jdbcTypd=INTEGER} AND</if>
-            page_key = #{pageKey, jdbcType=VARCHAR}
+            <if test="pageStatus != null">page_status = #{pageStatus} AND</if>
+            <if test="pageKey != null">page_key = #{pageKey}</if>
         </where>
     </select>
 

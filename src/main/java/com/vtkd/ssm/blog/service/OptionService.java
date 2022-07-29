@@ -43,6 +43,5 @@ public interface OptionService {
      * 查询所有 option
      * @return
      */
-    List<Option> listOption();
-
+    Option listOption();
 }

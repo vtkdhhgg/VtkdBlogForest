@@ -49,19 +49,16 @@ public interface CategoryService {
      */
     List<Category> listCategory();
 
-    /**
-     * 分页查询分类
-     * // todo 暂时不写sql，等后面写完整个项目再来完成这个功能
-     * @param pageSize 每页多少条
-     * @param pageIndex 第几页
-     * @return 分页数据
-     */
-    PageInfo<Category> pageListCategory(Integer pageSize, Integer pageIndex);
-
 
     /**
      * 查询所有标签 和 文章数量
      * @return
      */
     List<Category> listCategoryWithCount();
+
+    /**
+     * 查询所有标签数量
+     * @return
+     */
+    Integer countCategory();
 }

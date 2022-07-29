@@ -24,34 +24,11 @@ public interface ArticleService {
     void insertArticle(Article article);
 
     /**
-     * 获取文章评论总数
-     *
-     * @return 评论总数
-     */
-    Integer countArticleComment();
-
-    /**
      * 获取文章浏览总量
      *
      * @return 浏览总量
      */
     Integer countArticleView();
-
-    /**
-     * 统计有这个分类的文章数
-     *
-     * @param categoryId 分类id
-     * @return 文章数
-     */
-    Integer countArticleByCategoryId(Integer categoryId);
-
-    /**
-     * 统计有这个标签的文章数
-     *
-     * @param tagId 标签id
-     * @return 文章数
-     */
-    Integer countArticleByTagId(Integer tagId);
 
     /**
      * 根据 id 删除 文章
@@ -61,13 +38,6 @@ public interface ArticleService {
     void deleteArticle(Integer articleId);
 
     /**
-     * 批量删除文章
-     *
-     * @param ids 文章ID
-     */
-    void deleteArticleBatch(List<Integer> ids);
-
-    /**
      * 修改文章详细信息
      *
      * @param article 文章
@@ -75,18 +45,10 @@ public interface ArticleService {
     void updateArticleDetail(Article article);
 
     /**
-     * 修改文章简单信息
-     *
+     * 更新 文章
      * @param article 文章
      */
     void updateArticle(Article article);
-
-    /**
-     * 更新文章的评论数
-     *
-     * @param articleId 文章ID
-     */
-    void updateCommentCount(Integer articleId);
 
     /**
      * 获得最后更新记录
@@ -95,14 +57,15 @@ public interface ArticleService {
      */
     Article getLastUpdateArticle();
 
+
     /**
-     * 获得相关文章
+     * 根据文章id 查询文章(相关文章)
      *
-     * @param cateId 分类ID
-     * @param limit  查询数量
-     * @return 列表
+     * @param articleId 文章id
+     * @return 相关文章
      */
-    List<Article> listArticleByCategoryId(Integer cateId, Integer limit);
+    List<Article> listArticleByArticleId(Integer articleId,
+                                         Integer limit);
 
     /**
      * 根据 id 获取文章
@@ -111,32 +74,6 @@ public interface ArticleService {
      * @return 文章
      */
     Article getArticleById(Integer articleId);
-
-    /**
-     * 根据文章ID获得分类ID列表
-     *
-     * @param articleId 文章Id
-     * @return 列表
-     */
-    List<Integer> listCategoryIdByArticleId(Integer articleId);
-
-    /**
-     * 获得相关文章
-     *
-     * @param cateIds 分类ID集合
-     * @param limit   数量
-     * @return 列表
-     */
-    List<Article> listArticleByCategoryIds(List<Integer> cateIds, Integer limit);
-
-    /**
-     * 文章详情页面显示
-     *
-     * @param status 状态
-     * @param id     文章ID
-     * @return 文章
-     */
-    Article getArticleByStatusAndId(Integer status, Integer id);
 
     /**
      * 获取访问量较多的文章
@@ -198,14 +135,6 @@ public interface ArticleService {
                                     Integer limit);
 
     /**
-     * 所有文章，不分页
-     *
-     * @param criteria 查询条件
-     * @return 文章列表
-     */
-    List<Article> listArticle(HashMap<String, Object> criteria);
-
-    /**
      * 获得所有的文章
      *
      * @return 列表
@@ -222,4 +151,15 @@ public interface ArticleService {
      */
     PageInfo<Article> pageArticle(Integer pageIndex, Integer pageSize, HashMap<String, Object> criteria);
 
+    /**
+     * 增加文章 浏览人数
+     * @param articleId 文章id
+     */
+    void articleViewIncrease(Integer articleId);
+
+    /**
+     * 增加文章 的 点赞
+     * @param articleId 文章id
+     */
+    void articleLikeIncrease(Integer articleId);
 }

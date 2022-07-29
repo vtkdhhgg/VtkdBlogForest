@@ -21,19 +21,6 @@ public interface ArticleCategoryRefMapper {
      * @return 文章总数
      */
     Integer countArticleByCategoryId(Integer categoryId);
-    /**
-     * 根据 文章id 查询 相关联分类总数
-     * @param articleId 文章id
-     * @return 文章总数
-     */
-    Integer countCategoryByArticleId(Integer articleId);
-
-    /**
-     * 根据 分类id 获取相关联文章的id 列表
-     * @param categoryId 分类id
-     * @return 关联文章id
-     */
-    List<Integer> getArticleListByCategoryId(Integer categoryId);
 
     /**
      * 根据 文章id 获取相关联分类 列表
@@ -48,14 +35,6 @@ public interface ArticleCategoryRefMapper {
      * @return 影响行数
      */
     int insertArticleCategoryRef(ArticleCategoryRef articleCategoryRef);
-
-    /**
-     * 删除 文章和分类的映射关系
-     * @param articleId 文章id
-     * @param categoryId 分类id
-     * @return 影响行数
-     */
-    int deleteArticleCategoryRef(@Param("articleId")Integer articleId, @Param("categoryId") Integer categoryId);
 
     /**
      * 根据 文章id 删除分类

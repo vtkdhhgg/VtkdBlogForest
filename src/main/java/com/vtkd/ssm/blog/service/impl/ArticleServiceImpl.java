@@ -1,22 +1,20 @@
 package com.vtkd.ssm.blog.service.impl;
 
-import cn.hutool.log.Log;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.vtkd.ssm.blog.entity.*;
 import com.vtkd.ssm.blog.mapper.*;
 import com.vtkd.ssm.blog.service.ArticleService;
-import com.vtkd.ssm.blog.service.CategoryService;
 import lombok.extern.slf4j.Slf4j;
-import org.checkerframework.checker.units.qual.A;
-import org.checkerframework.checker.units.qual.C;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.mail.internet.MailDateFormat;
-import java.awt.event.FocusEvent;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * 文章 服务层接口实现
@@ -73,6 +71,26 @@ public class ArticleServiceImpl implements ArticleService {
         return pageInfo;
     }
 
+    @Override
+    public void articleViewIncrease(Integer articleId) {
+        try {
+            articleMapper.articleViewIncrease(articleId);
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.error("更新文章浏览数量失败, articleId:{} cause:{}", articleId, e);
+        }
+    }
+
+    @Override
+    public void articleLikeIncrease(Integer articleId) {
+        try {
+            articleMapper.articleLikeIncrease(articleId);
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.error("更新文章点赞数量失败, articleId:{} cause:{}", articleId, e);
+        }
+    }
+
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -101,24 +119,19 @@ public class ArticleServiceImpl implements ArticleService {
         }
     }
 
-    @Override
-    public Integer countArticleComment() {
-        return null;
-    }
 
     @Override
     public Integer countArticleView() {
-        return null;
-    }
+       Integer countView = null;
 
-    @Override
-    public Integer countArticleByCategoryId(Integer categoryId) {
-        return null;
-    }
+        try {
+            countView = articleMapper.countArticleView();
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.error("查询浏览总量失败, cause:{}", e);
+        }
 
-    @Override
-    public Integer countArticleByTagId(Integer tagId) {
-        return null;
+        return countView;
     }
 
     @Override
@@ -138,11 +151,6 @@ public class ArticleServiceImpl implements ArticleService {
             e.printStackTrace();
             log.error("删除文章错误, articleId:{}, cause:{}", articleId, e);
         }
-    }
-
-    @Override
-    public void deleteArticleBatch(List<Integer> ids) {
-
     }
 
     @Override
@@ -186,18 +194,34 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public void updateCommentCount(Integer articleId) {
-
-    }
-
-    @Override
     public Article getLastUpdateArticle() {
-        return null;
+        Article article = null;
+        try {
+            article = articleMapper.getLastUpdateArticle();
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.error("查询最后更新的文章失败, cause:{}", e);
+        }
+        return article;
     }
 
+    /**
+     * @param articleId 文章id
+     * @param limit
+     * @return
+     */
     @Override
-    public List<Article> listArticleByCategoryId(Integer cateId, Integer limit) {
-        return null;
+    public List<Article> listArticleByArticleId(Integer articleId, Integer limit) {
+        List<Article> articles = null;
+
+        try {
+            articles = articleMapper.listArticleByArticleId(articleId, limit);
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.error("获取相关文章失败, articleId:{}, limit:{}, cause:{}", articleId, limit, e);
+        }
+
+        return articles;
     }
 
     @Override
@@ -219,43 +243,67 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public List<Integer> listCategoryIdByArticleId(Integer articleId) {
-        return null;
-    }
-
-    @Override
-    public List<Article> listArticleByCategoryIds(List<Integer> cateIds, Integer limit) {
-        return null;
-    }
-
-    @Override
-    public Article getArticleByStatusAndId(Integer status, Integer id) {
-        return null;
-    }
-
-    @Override
     public List<Article> listArticleByViewCount(Integer limit) {
-        return null;
+        List<Article> articles = null;
+        try {
+            articles = articleMapper.listArticleByViewCount(limit);
+        }catch (Exception e){
+            e.printStackTrace();
+            log.error("查询猜你喜欢文章失败, limit:{}, cause:{}", limit, e);
+        }
+
+        return articles;
     }
 
     @Override
-    public Article getAfterArticle(Integer id) {
-        return null;
+    public Article getAfterArticle(Integer articleId) {
+        Article article = null;
+        try {
+            article = articleMapper.getAfterArticle(articleId);
+        }catch (Exception e){
+            e.printStackTrace();
+            log.error("查询下一篇文章失败, articleId:{}, cause:{}", articleId, e);
+        }
+
+        return article;
     }
 
     @Override
-    public Article getPreArticle(Integer id) {
-        return null;
+    public Article getPreArticle(Integer articleId) {
+        Article article = null;
+        try {
+            article = articleMapper.getPreArticle(articleId);
+        }catch (Exception e){
+            e.printStackTrace();
+            log.error("查询下一篇文章失败, articleId:{}, cause:{}", articleId, e);
+        }
+
+        return article;
     }
 
     @Override
     public List<Article> listRandomArticle(Integer limit) {
-        return null;
+        List<Article> articles = null;
+        try {
+            articles = articleMapper.listRandomArticle(limit);
+        }catch (Exception e){
+            e.printStackTrace();
+            log.error("查询随机文章失败, limit:{}, cause:{}", limit, e);
+        }
+
+        return articles;
     }
 
     @Override
     public List<Article> listArticleByCommentCount(Integer limit) {
-        return null;
+        List<Article> articles = null;
+        try {
+            articles = articleMapper.listArticleByCommentCount(limit);
+        }catch (Exception e){
+            e.printStackTrace();
+            log.error("查询热评文章失败, limit:{}, cause:{}", limit, e);
+        }
+        return articles;
     }
 
 
@@ -278,13 +326,16 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public List<Article> listArticle(HashMap<String, Object> criteria) {
-        return null;
-    }
-
-    @Override
     public List<Article> listAllNotWithContent() {
-        return null;
+        List<Article> articles = null;
+        try {
+            articles = articleMapper.listAllNotWithContent();
+        }catch (Exception e){
+            e.printStackTrace();
+            log.error("查询归档文章失败, cause:{}", e);
+        }
+
+        return articles;
     }
 
 

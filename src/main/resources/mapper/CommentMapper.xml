@@ -84,7 +84,7 @@
         <include refid="Base_Column_List"/>
         from
         <include refid="tb"/>
-        where comment_id = #{comment_id, jdbcType=INTEGER}
+        where comment_id = #{commentId, jdbcType=INTEGER}
     </select>
 
     <!--更新 评论-->
@@ -116,7 +116,8 @@
         <include refid="tb"/>
         (<include refid="Base_Column_List"/>)
         values
-        (#{commentId, jdbcType=INTEGER},#{commentPid, jdbcType=INTEGER}, #{commentPname, jdbcType=VARCHAR},#{commentArticleId, jdbcType=INTEGER},
+        (#{commentId, jdbcType=INTEGER},#{commentPid, jdbcType=INTEGER},
+        #{commentPname, jdbcType=VARCHAR},#{commentArticleId, jdbcType=INTEGER},
         #{commentAuthorName, jdbcType=VARCHAR},#{commentAuthorEmail, jdbcType=VARCHAR},
         #{commentAuthorUrl, jdbcType=VARCHAR},#{commentAuthorAvatar, jdbcType=VARCHAR},
         #{commentContent, jdbcType=VARCHAR},#{commentAgent, jdbcType=VARCHAR},#{commentIp, jdbcType=VARCHAR},
@@ -148,6 +149,21 @@
         </where>
         order by `comment_create_time` DESC, `comment_id` DESC
         limit 0, #{limit, jdbcType=INTEGER}
+    </select>
+
+    <!--根据文章id 查询评论-->
+    <select id="getCommentByArticleId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from
+        <include refid="tb"/>
+        where comment_article_id = #{articleId, jdbcType=INTEGER}
+    </select>
+
+    <select id="countComment" resultType="java.lang.Integer">
+        select COUNT(*)
+        from
+        <include refid="tb"/>
     </select>
 
 

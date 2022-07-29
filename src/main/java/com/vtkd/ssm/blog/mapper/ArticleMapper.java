@@ -56,13 +56,6 @@ public interface ArticleMapper {
     Article getArticleById(Integer articleId);
 
     /**
-     * 文章列表
-     * @param status 状态
-     * @return
-     */
-    List<Article> listArticle(Integer status);
-
-    /**
      * 获得文章总数
      *
      * @param status 状态
@@ -88,4 +81,96 @@ public interface ArticleMapper {
     List<Article> listRecentArticle(@Param("userId") Integer userId,
                                     @Param("limit") Integer limit);
 
+    /**
+     * 根据分类id 获得相关文章
+     *
+     * @param categoryIds 分类ID集合
+     * @param limit  查询数量
+     * @return 列表
+     */
+    List<Article> listArticleByCategoryIds(@Param("categoryIds") List<Integer> categoryIds,
+                                          @Param("limit") Integer limit);
+
+    /**
+     * 根据文章id 查询文章(相关文章)
+     * @param articleId 文章id
+     * @return 相关文章
+     */
+    List<Article> listArticleByArticleId(@Param("articleId") Integer articleId,
+                                         @Param("limit") Integer limit);
+
+    /**
+     * 获取访问量较多的文章
+     *
+     * @param limit 查询数量
+     * @return 列表
+     */
+    List<Article> listArticleByViewCount(Integer limit);
+
+    /**
+     * 获取下一篇文章
+     * @param articleId 文章id
+     * @return 文章
+     */
+    Article getAfterArticle(Integer articleId);
+
+    /**
+     * 获取上一篇文章
+     * @param articleId 文章id
+     * @return 文章
+     */
+    Article getPreArticle(Integer articleId);
+
+    /**
+     * 获得随机文章
+     *
+     * @param limit 查询数量
+     * @return 列表
+     */
+    List<Article> listRandomArticle(Integer limit);
+
+    /**
+     * 获得评论数较多的文章
+     *
+     * @param limit 查询数量
+     * @return 列表
+     */
+    List<Article> listArticleByCommentCount(Integer limit);
+
+    /**
+     * 增加文章 浏览人数
+     * @param articleId 文章id
+     */
+    int articleViewIncrease(Integer articleId);
+
+    /**
+     * 查询浏览总量
+     * @return 浏览总量
+     */
+    Integer countArticleView();
+
+    /**
+     * 查询最后更新的文章
+     * @return
+     */
+    Article getLastUpdateArticle();
+
+    /**
+     * 增加文章 的 点赞
+     * @param articleId 文章id
+     * @return 影响行数
+     */
+
+    /**
+     * 点赞增加
+     * @param articleId 文章id
+     * @return 影响行数
+     */
+    int articleLikeIncrease(Integer articleId);
+
+    /**
+     * 归档 文章
+     * @return
+     */
+    List<Article> listAllNotWithContent();
 }

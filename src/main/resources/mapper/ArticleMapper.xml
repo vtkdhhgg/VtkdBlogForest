@@ -157,4 +157,153 @@
         limit 0, #{limit, jdbcType=INTEGER}
     </select>
 
+    <!--根据 分类ID集合 查询文章-->
+    <select id="listArticleByCategoryIds" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from
+        <include refid="tb"/>
+        <where>
+            article_status = 1 and
+            article_id in (
+            select article_id from
+            article_category_ref acr
+            where
+            category_id in
+            <if test="categoryIds != null">
+                <foreach collection="categoryIds" open="(" close=")" separator="," item="id">
+                    #{id}
+                </foreach>
+            </if>
+        </where>
+        order by `article_like_count` DESC
+        limit #{limit, jdbcType=INTEGER}
+    </select>
+
+    <!--根据文章id查询分类id集合-->
+    <select id="listArticleByArticleId" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from
+        <include refid="tb"/>
+        where article_id in (
+        select
+        category_id
+        from article_category_ref
+        where article_id = #{articleId, jdbcType=INTEGER}
+        )
+        order by article_like_count DESC
+        limit #{limit, jdbcType=INTEGER}
+    </select>
+
+    <!--猜你喜欢的文章(分页查询观看数最多的文章)-->
+    <select id="listArticleByViewCount" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from
+        <include refid="tb"/>
+        where article_status = 1
+        order by article_view_count DESC
+        limit #{limit, jdbcType=INTEGER}
+    </select>
+
+    <!--下一篇文章-->
+    <select id="getAfterArticle" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from
+        <include refid="tb"/>
+        where article_status = 1 AND
+        article_id <![CDATA[ > ]]> #{articleId, jdbcType=INTEGER}
+        order by article_id ASC
+        limit 1
+    </select>
+
+    <!--上一篇文章-->
+    <select id="getPreArticle" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from
+        <include refid="tb"/>
+        <where>
+            article_status = 1 AND
+            article_id
+            <![CDATA[ < ]]>
+            #{articleId, jdbcType=INTEGER}
+        </where>
+        order by article_id ASC
+        limit 1
+    </select>
+
+    <!--获取 随机文章-->
+    <select id="listRandomArticle" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        <include refid="tb"/>
+        where article_status = 1
+        order by
+        RAND()
+        limit #{limit}
+    </select>
+
+
+    <!--热评的文章(分页查询 评论最多 的文章)-->
+    <select id="listArticleByCommentCount" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from
+        <include refid="tb"/>
+        where article_status = 1
+        order by article_comment_count DESC
+        limit #{limit, jdbcType=INTEGER}
+    </select>
+
+    <!--增加 文章的浏览人数 -->
+    <update id="articleViewIncrease" parameterType="java.lang.Integer">
+        update
+        <include refid="tb"/>
+        set
+        article_view_count = 1+article.article_view_count
+        where article_id = #{articleId, jdbcType=INTEGER}
+    </update>
+
+    <!--查询 浏览总量-->
+    <select id="countArticleView" resultType="java.lang.Integer">
+        select
+        sum(`article_view_count`)
+        from
+        <include refid="tb"/>
+    </select>
+
+    <!--查询最后一个更新的文章-->
+    <select id="getLastUpdateArticle" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from
+        <include refid="tb"/>
+        order by `article_update_time` DESC
+        limit 1
+    </select>
+
+    <!--增加 文章 的点赞数量 -->
+    <update id="articleLikeIncrease" parameterType="java.lang.Integer">
+        update
+        <include refid="tb"/>
+        set
+        `article_like_count` = 1+article_like_count
+        where article_id = #{articleId, jdbcType=INTEGER}
+    </update>
+
+    <!--归档文章-->
+    <select id="listAllNotWithContent" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from
+        <include refid="tb"/>
+        where article_status = 1
+        ORDER BY article_status ASC, article_create_time DESC, article_id DESC
+    </select>
+
+
 </mapper>

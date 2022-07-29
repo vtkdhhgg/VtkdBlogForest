@@ -28,10 +28,11 @@ public class BackUserController {
 
     /**
      * 用户信息列表
+     *
      * @return
      */
     @RequestMapping("")
-    public ModelAndView userListView(){
+    public ModelAndView userListView() {
         ModelAndView modelAndView = new ModelAndView();
         // 需要用户信息列表
         List<User> users = userService.listUser();
@@ -45,12 +46,13 @@ public class BackUserController {
 
     /**
      * 个人信息编辑页面
+     *
      * @param userId 用户id
      * @return
      */
     @ApiOperation("个人信息编辑页面")
     @RequestMapping("/edit/{userId}")
-    public ModelAndView editUserView(Integer userId){
+    public ModelAndView editUserView(Integer userId) {
         //根据id查询user
         User user = userService.getUserById(userId);
 
@@ -63,13 +65,14 @@ public class BackUserController {
 
     /**
      * 修改用户信息
-     * @param user 用户
+     *
+     * @param user    用户
      * @param session
      * @return
      */
     @ApiOperation("修改用户信息")
     @RequestMapping(value = "/editSubmit", method = RequestMethod.POST)
-    public ModelAndView editSubmit(User user, HttpSession session){
+    public ModelAndView editSubmit(User user, HttpSession session) {
         // 修改用户信息
         userService.updateUser(user);
         User sessionUser = userService.getUserById(user.getUserId());
@@ -80,19 +83,20 @@ public class BackUserController {
 
     /**
      * 检查 用户名是否重复, 除了自己的
+     *
      * @param userName 用户名
-     * @param userId 用户id
+     * @param userId   用户id
      * @return
      */
     @ApiOperation("检查 用户名是否重复, 除了自己的")
-    @RequestMapping(value = "/checkUserName", method = RequestMethod.POST,produces = {"application/json;charset=UTF-8"})
+    @RequestMapping(value = "/checkUserName", method = RequestMethod.POST, produces = {"application/json;charset=UTF-8"})
     @ResponseBody
     public JsonResult checkUserName(@RequestParam("username") String userName
-            , @RequestParam("id") Integer userId){
+            , @RequestParam("id") Integer userId) {
 
         User checkUser = userService.getUserByName(userName);
         // 如果查询到 这个用户就是自己那么就不算是重复
-        if (checkUser!=null && !Objects.equals(checkUser.getUserId(), userId)) {
+        if (checkUser != null && !Objects.equals(checkUser.getUserId(), userId)) {
             // 用户名重复
             return new JsonResult().fail("用户名重复");
         }
@@ -103,19 +107,20 @@ public class BackUserController {
 
     /**
      * 检查 用户邮箱地址是否重复, 除了自己的
+     *
      * @param userEmail
      * @param userId
      * @return
      */
     @ApiOperation("检查 用户邮箱地址是否重复, 除了自己的")
-    @RequestMapping(value = "/checkUserEmail",method = RequestMethod.POST,produces = {"application/json;charset=UTF-8"})
+    @RequestMapping(value = "/checkUserEmail", method = RequestMethod.POST, produces = {"application/json;charset=UTF-8"})
     @ResponseBody
     public JsonResult checkUserEmail(@RequestParam("email") String userEmail
-            , @RequestParam("id") Integer userId){
+            , @RequestParam("id") Integer userId) {
 
         User checkEmail = userService.getUserByName(userEmail);
         // 如果查询到 这个用户就是自己那么就不算是重复(除了自己)
-        if (checkEmail!=null && !checkEmail.getUserId().equals(userId)) {
+        if (checkEmail != null && !checkEmail.getUserId().equals(userId)) {
             // 电子邮件
             return new JsonResult().fail("电子邮件重复");
         }
@@ -125,27 +130,29 @@ public class BackUserController {
 
     /**
      * 根据id 删除用户
+     *
      * @param userId
      * @return
      */
     @ApiOperation("根据 id 删除用户")
     @RequestMapping("/delete/{userId}")
-    public ModelAndView deleteUserById(@PathVariable("userId") Integer userId){
+    public ModelAndView deleteUserById(@PathVariable("userId") Integer userId) {
         userService.deleteUser(userId);
         return new ModelAndView("redirect:/admin/user");
     }
 
     /**
      * 跳转到 inset user页面
+     *
      * @return
      */
     @RequestMapping("/insert")
-    public ModelAndView insertUserView(){
+    public ModelAndView insertUserView() {
         return new ModelAndView("Admin/User/insert");
     }
 
     @RequestMapping(value = "/insertSubmit", method = RequestMethod.POST)
-    public ModelAndView insertUser(User user){
+    public ModelAndView insertUser(User user) {
 
         // 初始化用户
         user.setUserRegisterTime(new Date());

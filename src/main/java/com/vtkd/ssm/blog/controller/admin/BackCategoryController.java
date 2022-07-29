@@ -42,12 +42,24 @@ public class BackCategoryController {
     }
 
     /**
+     * 跳转到添加分类页面
+     *
+     * @return
+     */
+    @RequestMapping("/insert")
+    public String insertView() {
+        return "redirect:/admin/category";
+    }
+
+    /**
      * 删除 分类
+     *
      * @param categoryId 分类id
      * @return
      */
     @RequestMapping("/delete/{categoryId}")
-    public String deleteCategory(@PathVariable("categoryId")Integer categoryId){
+    public String deleteCategory(@PathVariable("categoryId") Integer categoryId) {
+
         categoryService.deleteCategoryById(categoryId);
 
         return "redirect:/admin/category";
@@ -65,8 +77,8 @@ public class BackCategoryController {
 
         Category category = categoryService.getCategoryById(categoryId);
         List<Category> categoryList = categoryService.listCategoryWithCount();
-        modelAndView.addObject("category",category);
-        modelAndView.addObject("categoryList",categoryList);
+        modelAndView.addObject("category", category);
+        modelAndView.addObject("categoryList", categoryList);
 
         modelAndView.setViewName("Admin/Category/edit");
 
@@ -75,11 +87,12 @@ public class BackCategoryController {
 
     /**
      * 修改 分类提交
+     *
      * @param category 分类
      * @return
      */
     @RequestMapping("/editSubmit")
-    public String editCategorySubmit(Category category){
+    public String editCategorySubmit(Category category) {
         categoryService.updateCategory(category);
 
         return "redirect:/admin/category";
@@ -87,17 +100,17 @@ public class BackCategoryController {
 
     /**
      * 添加 分类提交
+     *
      * @param category 分类
      * @return
      */
     @RequestMapping("/insertSubmit")
-    public String insertCategorySubmit(Category category){
+    public String insertCategorySubmit(Category category) {
 
         categoryService.insertCategory(category);
 
         return "redirect:/admin/category";
     }
-
 
 
 }

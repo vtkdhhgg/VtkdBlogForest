@@ -60,6 +60,10 @@
             <mvc:mapping path="/**"/>
             <bean id="myInterceptor" class="com.vtkd.ssm.blog.interceptor.MyInterceptor"/>
         </mvc:interceptor>
+        <mvc:interceptor>
+            <mvc:mapping path="/**"/>
+            <bean class="com.vtkd.ssm.blog.interceptor.HomeResourceInterceptor"/>
+        </mvc:interceptor>
     </mvc:interceptors>
 
 
